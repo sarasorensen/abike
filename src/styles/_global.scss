@@ -8,9 +8,32 @@ body {
   background-color: vars.$placeholder-secondary-color;
 }
 
-main{
-    margin: vars.$spacing-small;
+main {
+  display: flex;
+  justify-content: center;        
+  max-width: 1200px;         
+  min-height: 100vh;            
+  margin: 0 auto;         
+  padding: vars.$spacing-medium vars.$spacing-medium;  
 }
+
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  flex-wrap: wrap; 
+}
+
+hr {
+  width: 100%; 
+  margin: 1rem 0; 
+  border: none; 
+  border-top: 1px solid #ced0dd; 
+}
+
+
 
 h1 {
   color: vars.$primary-color;

@@ -1,18 +1,19 @@
-@use '../../styles/variables' as vars;
+@use "../../styles/variables" as vars;
 
 table {
   width: 100%;
   margin-top: 20px;
   border-collapse: collapse;
 
-  th, td {
+  th,
+  td {
     padding: 12px 15px;
     border: 1px solid #ddd;
     text-align: left;
   }
 
   th {
-    background-color: vars.$primary-color; 
+    background-color: vars.$primary-color;
     color: white;
   }
 
@@ -21,11 +22,15 @@ table {
   }
 
   a {
-    color: vars.$secondary-color;  
+    color: vars.$secondary-color;
     text-decoration: none;
 
     &:hover {
       text-decoration: underline;
     }
   }
+}
+
+.dropdown-item-icon {
+  margin-right: vars.$spacing-medium;
 }

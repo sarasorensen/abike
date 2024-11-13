@@ -4,43 +4,65 @@
   display: flex;
   flex-direction: column;
   margin-bottom: vars.$spacing-large;
-}
 
-.input-field label {
-  font-size: vars.$font-size-label;
-  font-weight: 600;
-  color: vars.$placeholder-color;
-  margin-bottom: vars.$spacing-small;
-  transition: color 0.2s ease;
-}
+  .input-field-label {
+    font-size: vars.$font-size-label;
+    font-weight: 600;
+    color: vars.$placeholder-color;
+    margin-bottom: vars.$spacing-small;
+    transition: color 0.2s ease;
+  }
 
-.input-field input {
-  padding: vars.$spacing-small;
-  font-size: vars.$font-size-input;
-  background-color: vars.$placeholder-secondary-color;
-  border-radius: vars.$border-radius;
-  border: none;
-  outline: none;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
+  .input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
 
-.input-field input:focus {
-  border-color: vars.$placeholder-color;
-  box-shadow: 0 2px 4px vars.$placeholder-secondary-color;
-}
+  .input-icon {
+    position: absolute;
+    left: auto;
+    margin-top: 1.2em;
+    margin-left: vars.$spacing-medium;
+    font-size: 16px;
+    color: vars.$placeholder-color;
+    pointer-events: none;
+  }
 
-.input-field input::placeholder {
-  color: vars.$placeholder-color;
-}
+  input, textArea {
+    padding: vars.$spacing-small;
+    font-size: vars.$font-size-input;
+    background-color: vars.$placeholder-secondary-color;
+    border-radius: vars.$border-radius;
+    border: none;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
-.error-message {
-  font-size: vars.$font-size-error;
-  color: vars.$error-color;
-  margin-top: vars.$spacing-small;
-}
+    &::placeholder {
+      color: vars.$placeholder-color;
+      padding-left: vars.$spacing-large;
+    }
 
-.input-field input:disabled {
-  background-color: vars.$disabled-bg-color;
-  cursor: not-allowed;
-  border-color: #ccc;
+    &:focus {
+      border-color: vars.$placeholder-color;
+      box-shadow: 0 2px 4px vars.$placeholder-secondary-color;
+    }
+
+    &:disabled {
+      background-color: vars.$disabled-bg-color;
+      cursor: not-allowed;
+      border-color: #ccc;
+    }
+  }
+
+  &.input-field--white input {
+    background-color: #fff !important;
+    width: 35%;
+  }
+
+  .error-message {
+    font-size: vars.$font-size-error;
+    color: vars.$error-color;
+    margin-top: vars.$spacing-small;
+  }
 }
