@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import OrdersList from "./pages/OrdersList/index";
+import OrderDetails from "./pages/OrderDetails/index";
+import NewOrder from "./pages/NewOrder/index";
+import NotFound from "./pages/NotFound/index";
+import Header from "./components/Header";
+import './styles/main.scss';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Header />
+      <main>
+        <Routes>
+          <Route path="/" element={<OrdersList />} />
+          <Route path="/order/:id" element={<OrderDetails />} />
+          <Route path="/order/new" element={<NewOrder />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+    </Router>
   );
-}
+};
 
 export default App;

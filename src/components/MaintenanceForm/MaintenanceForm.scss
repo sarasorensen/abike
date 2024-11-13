@@ -1,0 +1,28 @@
+@use "../../styles/variables" as vars;
+
+.maintenance-form {
+  display: flex;
+  flex-direction: column;
+  gap: vars.$spacing-large;
+  max-width: 900px;
+  margin: 0 auto;
+  margin-bottom: vars.$spacing-medium;
+}
+
+.form-card {
+  background-color: #fff;
+  border-radius: vars.$border-radius;
+
+  .card-header {
+    color: vars.$primary-color;
+    padding: vars.$spacing-small;
+    border-top-left-radius: vars.$border-radius;
+    border-top-right-radius: vars.$border-radius;
+  }
+
+  .card-body {
+    padding: vars.$spacing-medium;
+    display: flex;
+    flex-direction: column;
+  }
+}

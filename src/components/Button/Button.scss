@@ -1,0 +1,23 @@
+@use "../../styles/variables" as vars;
+
+button {
+  min-width: 25%;
+  background-color: vars.$primary-color;
+  color: #fff;
+  padding: vars.$spacing-small vars.$spacing-medium;
+  font-size: vars.$font-size-input;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  display: block;
+  &:hover {
+    background-color: darken(vars.$primary-color, 10%);
+  }
+  &:disabled {
+    background-color: vars.$disabled-bg-color;
+    color: vars.$disabled-color;
+    cursor: not-allowed;
+  }
+}
+

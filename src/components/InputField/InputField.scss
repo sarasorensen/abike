@@ -1,0 +1,46 @@
+@use "../../styles/variables" as vars;
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: vars.$spacing-large;
+}
+
+.input-field label {
+  font-size: vars.$font-size-label;
+  font-weight: 600;
+  color: vars.$placeholder-color;
+  margin-bottom: vars.$spacing-small;
+  transition: color 0.2s ease;
+}
+
+.input-field input {
+  padding: vars.$spacing-small;
+  font-size: vars.$font-size-input;
+  background-color: vars.$placeholder-secondary-color;
+  border-radius: vars.$border-radius;
+  border: none;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-field input:focus {
+  border-color: vars.$placeholder-color;
+  box-shadow: 0 2px 4px vars.$placeholder-secondary-color;
+}
+
+.input-field input::placeholder {
+  color: vars.$placeholder-color;
+}
+
+.error-message {
+  font-size: vars.$font-size-error;
+  color: vars.$error-color;
+  margin-top: vars.$spacing-small;
+}
+
+.input-field input:disabled {
+  background-color: vars.$disabled-bg-color;
+  cursor: not-allowed;
+  border-color: #ccc;
+}

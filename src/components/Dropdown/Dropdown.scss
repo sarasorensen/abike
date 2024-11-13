@@ -1,0 +1,48 @@
+@use "../../styles/variables" as vars;
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+
+
+.dropdown-arrow {
+  margin-left: 8px;
+  transition: transform 0.2s ease;
+}
+
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute; 
+  top: 100%;
+  left: 0; 
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  z-index: 1000;
+  display: block;
+}
+
+.dropdown-item {
+  padding: 8px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dropdown-link {
+  text-decoration: none;
+  color: #007bff;
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-link:hover {
+  background-color: #f8f9fa;
+}

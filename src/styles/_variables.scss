@@ -1,0 +1,25 @@
+// Color Palette
+$primary-color: #4A90E2; // Soft Blue (Primary)
+$secondary-color: #8BB9D3; // Muted Light Blue (Secondary)
+$tertiary-color: #A6C8E2; // Pale Blue (Tertiary)
+
+$error-color: #D32F2F; // Red for error messages
+$placeholder-color: #aaaaba; // Light Gray for placeholders
+$placeholder-secondary-color: #f1f2f9;// Very Light Gray for placeholders
+$disabled-bg-color: #e3e6ef; // Very Light Gray for disabled inputs
+$disabled-color: #aaaaba; 
+$border-color: #E0E0E0; // Soft Gray for borders
+
+// Font Sizes
+$font-size-label: 0.875rem; // Label font size
+$font-size-input: 1rem;     // Input font size
+$font-size-error: 0.75rem;  // Error message font size
+
+// Spacing
+$spacing-small: 0.5rem;     // Small spacing
+$spacing-medium: 0.75rem;   // Medium spacing
+$spacing-large: 1.5rem;     // Large spacing
+
+// Border Radius & Width
+$border-radius: 8px;        // Rounded corners
+$border-width: 2px;         // Border width

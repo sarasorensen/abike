@@ -1,0 +1,10 @@
+{
+    "inputCustomerName": "input_customer_name",
+    "inputPhoneNumber": "input_phone_number",
+    "inputEmail": "input_email",
+    "inputBikeBrand": "input_bike_brand",
+    "inputServiceType": "input_service_type",
+    "inputDueDate": "inputDueDate",
+    "textAreaNotes": "text_area_notes",
+    "buttonSubmitMaintenance": "button_submit_maintenance"
+}
