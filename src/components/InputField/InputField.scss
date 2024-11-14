@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   margin-bottom: vars.$spacing-large;
+  position: relative;
 
   .input-field-label {
     font-size: vars.$font-size-label;
@@ -11,12 +12,6 @@
     color: vars.$placeholder-color;
     margin-bottom: vars.$spacing-small;
     transition: color 0.2s ease;
-  }
-
-  .input-with-icon {
-    position: relative;
-    display: flex;
-    align-items: center;
   }
 
   .input-icon {
@@ -29,7 +24,8 @@
     pointer-events: none;
   }
 
-  input, textArea {
+  input,
+  textArea {
     padding: vars.$spacing-small;
     font-size: vars.$font-size-input;
     background-color: vars.$placeholder-secondary-color;
@@ -54,10 +50,26 @@
       border-color: #ccc;
     }
   }
-
-  &.input-field--white input {
-    background-color: #fff !important;
-    width: 35%;
+  &.input-field--white {
+    margin: 0;
+    input {
+      background-color: #fff;
+      padding-left: vars.$spacing-xlarge;
+      &::placeholder {
+        padding-left: 0;
+      }
+      &:not(:placeholder-shown) {
+        padding-left: vars.$spacing-xlarge;
+      }
+    }
+  }
+  &.pl-0 {
+    input {
+      padding-left: vars.$spacing-small !important;
+      &:not(:placeholder-shown) {
+        padding-left: vars.$spacing-small !important;
+      }
+    }
   }
 
   .error-message {
@@ -65,4 +77,15 @@
     color: vars.$error-color;
     margin-top: vars.$spacing-small;
   }
+}
+
+.clear-icon {
+  position: absolute;
+  right: 10px;
+  top: 60%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: vars.$placeholder-color;
+  cursor: pointer;
+  pointer-events: auto;
 }

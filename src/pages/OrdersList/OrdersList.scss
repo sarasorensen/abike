@@ -1,24 +1,26 @@
 @use "../../styles/variables" as vars;
 
 table {
-  width: 100%;
   margin-top: 20px;
-  border-collapse: collapse;
+  border-collapse: separate; 
+  border-spacing: 0 10px; 
 
   th,
   td {
     padding: 12px 15px;
-    border: 1px solid #ddd;
     text-align: left;
   }
 
   th {
-    background-color: vars.$primary-color;
-    color: white;
+    color: vars.$tertiary-color;
+    cursor: pointer;
+    padding-bottom: 0;
+    border: none;
   }
 
-  tr:nth-child(even) {
-    background-color: #f9f9f9;
+  tr {
+    background-color: #fff;
+    margin-bottom: 10px;
   }
 
   a {
@@ -31,6 +33,11 @@ table {
   }
 }
 
-.dropdown-item-icon {
-  margin-right: vars.$spacing-medium;
+.filters-container,
+.filters-heading {
+  background-color: transparent !important;
+
+  & th {
+    padding-top: 0;
+  }
 }

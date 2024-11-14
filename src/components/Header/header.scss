@@ -1,33 +1,51 @@
 @use "../../styles/variables" as vars;
-
 .header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 1rem;
+  align-items: center;
+  padding: vars.$spacing-medium;
   background-color: #fff;
-  color: vars.$primary-color;
-  &__title {
-    text-decoration: none;
-    font-size: 1.5rem;
+
+  &__logo-breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: vars.$spacing-medium;
   }
 
-  &__nav {
+  &__title {
+    text-decoration: none;
+    color: vars.$primary-color;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  &__breadcrumbs {
     display: flex;
-    gap: 1rem;
+    align-items: center;
+    font-size:vars.$font-size-input;
+  }
+
+  &__breadcrumb-item {
+    display: inline-flex;
+    align-items: center;
   }
 
   &__link {
-    color: vars.$primary-color;
+    color: vars.$tertiary-color;
     text-decoration: none;
-
+    opacity: 0.8;
+    cursor: pointer;
+    font-size: vars.$font-size-label;
+    font-weight: 600;
+    color: vars.$placeholder-color;
+    transition: color 0.2s ease;
     &:hover {
-      text-decoration: underline;
-    }
-
-    &--active {
-      font-weight: bold;
-      text-decoration: underline;
+     opacity: 1;
     }
   }
+}
+.header__separator {
+  margin: 0 5px;
+  color: vars.$placeholder-color;
+  font-weight: 600;
 }

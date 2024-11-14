@@ -1,5 +1,5 @@
 import React from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaTimes } from "react-icons/fa";
 import "./InputField.scss";
 
 interface InputFieldProps {
@@ -10,6 +10,7 @@ interface InputFieldProps {
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
+  onClear?: () => void; 
   type?: string;
   required?: boolean;
   testId: string;
@@ -24,6 +25,7 @@ const InputField: React.FC<InputFieldProps> = ({
   name,
   placeholder,
   onChange,
+  onClear,
   type = "text",
   required = false,
   testId,
@@ -32,6 +34,12 @@ const InputField: React.FC<InputFieldProps> = ({
   classesName,
 }) => {
   const isError = showError && !value;
+
+  const handleClear = () => {
+    if (onClear) {
+      onClear(); 
+    }
+  };
 
   return (
     <div className={`input-field ${classesName}`}>
@@ -62,6 +70,13 @@ const InputField: React.FC<InputFieldProps> = ({
             data-testid={testId}
             aria-describedby={isError ? `${testId}-error` : undefined}
           />
+          {value && onClear && (
+            <FaTimes
+              className="clear-icon"
+              onClick={handleClear}
+              data-testid={`${testId}-clear`}
+            />
+          )}
         </>
       )}
       {isError && (

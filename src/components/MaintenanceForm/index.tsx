@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import InputField from "../InputField";
 import Button from "../Button";
+import InputSelect from "../InputSelect/index";
 import { MaintenanceOrder } from "../../types/maintenanceOrder";
+import {services} from "../../shared-constants/services"
 import ids from "./test-ids.json";
 import "./MaintenanceForm.scss";
 
@@ -45,9 +47,7 @@ const MaintenanceForm = ({
     }
   }, [orderData]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: { target: { name: string; value: string } }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -170,16 +170,17 @@ const MaintenanceForm = ({
               />
             </div>
             <div className="col-sm-6">
-              <InputField
-                required
-                label="Service Type"
-                name="serviceType"
-                type="text"
+              <InputSelect
+                options={services}
                 value={formData.serviceType}
-                onChange={handleChange}
-                testId={ids.inputServiceType}
+                onSelect={(value: any) =>
+                  handleChange({ target: { name: "serviceType", value } })
+                }
+                required
                 errorMessage="Service type cannot be empty"
                 showError={touched.serviceType && !formData.serviceType}
+                placeholder="Select service type"
+                testId={ids.selectServiceType}
               />
             </div>
             <div className="col-sm-12">
