@@ -35,7 +35,6 @@ const NewOrder: React.FC = () => {
     <div>
       <MaintenanceForm
         orderData={order}
-        title="Edit Order"
         onSubmit={handleUpdateOrder}
       />
     </div>

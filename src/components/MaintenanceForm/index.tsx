@@ -10,12 +10,10 @@ import "./MaintenanceForm.scss";
 
 const MaintenanceForm = ({
   orderData = null,
-  onSubmit,
-  title,
+  onSubmit
 }: {
   orderData?: MaintenanceOrder | null;
   onSubmit: (data: MaintenanceOrder) => void;
-  title: string;
 }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<MaintenanceOrder>({
@@ -118,7 +116,7 @@ const MaintenanceForm = ({
 
   return (
     <form onSubmit={handleSubmit} className="page-wrap">
-      <h1>{title}</h1>
+      <h1> {orderData ? "Edit Order" : "New Order"}</h1>
       <div className="form-card">
         <div className="card-header">
           <h5>Personal Information</h5>
