@@ -77,7 +77,7 @@ const InputSelect: React.FC<SelectComponentProps> = ({
           readOnly
           onClick={toggleSelect}
         />
-        <span className={`select-arrow ${isOpen ? "open" : ""}`}>
+        <span className={`select-arrow ${classesName || ""}`}>
           <FaArrowDown />
         </span>
       </div>

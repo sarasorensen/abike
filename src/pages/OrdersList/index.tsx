@@ -152,7 +152,7 @@ const OrdersList: React.FC = () => {
   };
 
   return (
-    <div className="orders-table">
+    <div className="page-wrap">
       <div className="header-container">
         <h1>Orders</h1>
         <Dropdown
@@ -172,7 +172,7 @@ const OrdersList: React.FC = () => {
           <tr className="filters-heading">
             <th
               onClick={() => handleSort("customerName")}
-              style={{ minWidth: "250px" }}
+              style={{ minWidth: "200px" }}
             >
               Customer Name{" "}
               {sortColumn === "customerName" &&
@@ -194,7 +194,7 @@ const OrdersList: React.FC = () => {
             </th>
             <th
               onClick={() => handleSort("serviceType")}
-              style={{ minWidth: "250px" }}
+              style={{ minWidth: "200px" }}
             >
               Service type{" "}
               {sortColumn === "serviceType" &&
@@ -315,7 +315,7 @@ const OrdersList: React.FC = () => {
                     },
                     {
                       label: "Edit order",
-                      action: `/orders/edit/${order.id}`,
+                      action: `/orders/details/${order.id}/edit`,
                       icon: "FaEdit",
                     },
                     {

@@ -10,10 +10,6 @@
   transition: transform 0.2s ease;
 }
 
-.dropdown-arrow.open {
-  transform: rotate(180deg);
-}
-
 .dropdown-menu {
   position: absolute;
   top: 100%;

@@ -5,15 +5,28 @@
   border-radius: vars.$border-radius;
 
   .card-header {
+    display: flex;
+    align-items: center;
     color: vars.$primary-color;
     padding: vars.$spacing-small;
     border-top-left-radius: vars.$border-radius;
     border-top-right-radius: vars.$border-radius;
+    &--icon {
+      font-size: 1.75em;
+      margin-right: vars.$spacing-small;
+    }
   }
 
   .card-body {
     padding: vars.$spacing-medium;
     display: flex;
     flex-direction: column;
+    & label{
+      font-size: vars.$font-size-label;
+      font-weight: 600;
+      color: vars.$tertiary-color;
+      margin-bottom: vars.$spacing-small;
+      transition: color 0.2s ease;
+    }
   }
 }

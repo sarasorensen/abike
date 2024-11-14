@@ -1,7 +1,7 @@
 @use "../../styles/variables" as vars;
 
 button {
-  min-width: 25%;
+  min-width: 15%;
   background-color: vars.$primary-color;
   color: #fff;
   padding: vars.$spacing-small vars.$spacing-medium;

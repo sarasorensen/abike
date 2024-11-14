@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { FaBicycle } from "react-icons/fa";
+import { MdOutlineNoteAlt } from "react-icons/md";
+import { RxAvatar } from "react-icons/rx";
 import Button from "../../components/Button/index";
 import Dropdown from "../../components/Dropdown/index";
 import { mockedOrders } from "../../shared-constants/mockedOrders";
 import "./OrderDetails.scss";
-import ids from "./test-ids.json"
+import ids from "./test-ids.json";
 
 interface Order {
   id: string;
@@ -14,6 +17,7 @@ interface Order {
   bikeBrand: string;
   serviceType: string;
   dueDate: string;
+  notes?: string;
 }
 
 const OrderDetails: React.FC = () => {
@@ -21,7 +25,6 @@ const OrderDetails: React.FC = () => {
   const navigate = useNavigate();
   const [orderDetails, setOrderDetails] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (id) {
@@ -29,12 +32,6 @@ const OrderDetails: React.FC = () => {
       if (order) {
         setOrderDetails(order);
         setLoading(false);
-      } else {
-        setError("Order not found");
-        setLoading(false);
-        setTimeout(() => {
-          navigate("/orders");
-        });
       }
     }
   }, [id, navigate]);
@@ -43,28 +40,19 @@ const OrderDetails: React.FC = () => {
     return <div className="loading">Loading...</div>;
   }
 
-  if (error) {
-    return (
-      <div className="error-message">
-        <p>{error}</p>
-        <p>Redirecting to orders...</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="page-wrap">
+    <div className="page-wrap w-50">
       <div className="header-container">
         <h1>Order Details</h1>
         <Dropdown
           options={[
             {
               label: "Edit Order",
-              action: `/orders/details/edit/${id}`,
+              action: `/orders/details/${id}/edit`,
               icon: "FaEdit",
             },
             {
-              label: "Delete order",
+              label: "Delete Order",
               action: `orders/delete/${id}`,
               icon: "FaTrashAlt",
             },
@@ -72,29 +60,62 @@ const OrderDetails: React.FC = () => {
         />
         <hr />
       </div>
-      <div className="order-info">
-        <div className="info-item">
-          <strong>Customer Name:</strong> {orderDetails?.customerName}
+
+      <div className="form-card">
+        <div className="card-header">
+          <RxAvatar className="card-header--icon" />
+          <h5>Personal Information</h5>
         </div>
-        <div className="info-item">
-          <strong>Phone Number:</strong> {orderDetails?.phoneNumber}
+        <div className="card-body">
+          <div className="row">
+            <div className="col-sm-6">
+              <label>Customer Name:</label> {orderDetails?.customerName}
+            </div>
+            <div className="col-sm-6">
+              <label>Phone Number:</label> {orderDetails?.phoneNumber}
+            </div>
+            <div className="col-sm-6">
+              <label>Email:</label> {orderDetails?.email}
+            </div>
+            <div className="col-sm-6">
+              <label>Order ID:</label> {orderDetails?.id}
+            </div>
+          </div>
         </div>
-        <div className="info-item">
-          <strong>Email:</strong> {orderDetails?.email}
+
+        <div className="card-header">
+          <FaBicycle className="card-header--icon" />
+          <h5>Bike Information</h5>
         </div>
-        <div className="info-item">
-          <strong>Bike Brand:</strong> {orderDetails?.bikeBrand}
+        <div className="card-body">
+          <div className="row">
+            <div className="col-sm-6">
+              <label>Bike Brand:</label> {orderDetails?.bikeBrand}
+            </div>
+            <div className="col-sm-6">
+              <label>Service Type:</label> {orderDetails?.serviceType}
+            </div>
+            <div className="col-sm-12">
+              <label>Due Date:</label> {orderDetails?.dueDate}
+            </div>
+          </div>
         </div>
-        <div className="info-item">
-          <strong>Service Type:</strong> {orderDetails?.serviceType}
-        </div>
-        <div className="info-item">
-          <strong>Due Date:</strong> {orderDetails?.dueDate}
-        </div>
-        <div className="info-item">
-          <strong>Order ID:</strong> {orderDetails?.id}
-        </div>
+
+        {orderDetails?.notes && (
+          <>
+            <div className="card-header">
+              <MdOutlineNoteAlt className="card-header--icon" />
+              <h5>Additional Notes</h5>
+            </div>
+            <div className="card-body">
+              <div className="row">
+                <div className="col-sm-12">{orderDetails?.notes}</div>
+              </div>
+            </div>
+          </>
+        )}
       </div>
+
       <div className="d-flex justify-content-end gap-3 mb-4 mt-2">
         <Button
           onClick={() => navigate("/orders")}

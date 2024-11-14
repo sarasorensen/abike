@@ -82,7 +82,7 @@ const Dropdown: React.FC<DropdownProps> = ({ options, type }) => {
           label={
             <>
               Options
-              <span className={`dropdown-arrow ${isOpen ? "open" : ""}`}>
+              <span className={`dropdown-arrow`}>
                 <FaArrowDown />
               </span>
             </>

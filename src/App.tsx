@@ -11,12 +11,12 @@ import "./styles/main.scss";
 const routes = [
   { path: "/orders", breadcrumb: "Orders" },
   { path: "/orders/details/:id", breadcrumb: "Order Details" },
-  { path: "/orders/details/edit/:id", breadcrumb: "Edit" },
+  { path: "/orders/details/:id/edit", breadcrumb: "Edit" },
   { path: "/orders/new", breadcrumb: "New Order" },
 ];
 
 const App: React.FC = () => {
-  const breadcrumbs = useBreadcrumbs(routes);
+  const breadcrumbs = useBreadcrumbs(routes, { excludePaths: ["/orders/details"] });
 
   return (
     <>
@@ -27,7 +27,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Navigate to="/orders" />} />
           <Route path="/orders" element={<OrdersList />} />
           <Route path="/orders/details/:id" element={<OrderDetails />} />
-          <Route path="/orders/details/edit/:id" element={<NewOrder />} />
+          <Route path="/orders/details/:id/edit" element={<NewOrder />} />
           <Route path="/orders/new" element={<NewOrder />} />
           <Route path="*" element={<Navigate to="/orders" />} />
         </Routes>
