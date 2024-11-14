@@ -19,11 +19,19 @@ main {
   padding: vars.$spacing-medium vars.$spacing-medium;
 }
 
+.page-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: vars.$spacing-large;
+  width: 100%;
+  margin-bottom: vars.$spacing-medium;
+}
+
 .header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1rem;
+  padding-top: 1rem;
   flex-wrap: wrap;
 }
 

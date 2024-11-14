@@ -4,7 +4,7 @@ import InputField from "../InputField";
 import Button from "../Button";
 import InputSelect from "../InputSelect/index";
 import { MaintenanceOrder } from "../../types/maintenanceOrder";
-import {services} from "../../shared-constants/services"
+import { services } from "../../shared-constants/services";
 import ids from "./test-ids.json";
 import "./MaintenanceForm.scss";
 
@@ -98,8 +98,26 @@ const MaintenanceForm = ({
     // eslint-disable-next-line
   }, [formData]);
 
+  useEffect(() => {
+    if (orderData) {
+      const serviceTypeValue =
+        services.find((service) => service.label === orderData.serviceType)
+          ?.value || "";
+
+      const formattedDueDate = new Date(orderData.dueDate)
+        .toISOString()
+        .split("T")[0];
+
+      setFormData({
+        ...orderData,
+        serviceType: serviceTypeValue,
+        dueDate: formattedDueDate,
+      });
+    }
+  }, [orderData]);
+
   return (
-    <form onSubmit={handleSubmit} className="maintenance-form">
+    <form onSubmit={handleSubmit} className="page-wrap">
       <h1>{title}</h1>
       <div className="form-card">
         <div className="card-header">
@@ -125,7 +143,7 @@ const MaintenanceForm = ({
                 required
                 label="Phone Number"
                 name="phoneNumber"
-                type="number"
+                type="tel"
                 value={formData.phoneNumber}
                 onChange={handleChange}
                 testId={ids.inputPhoneNumber}
@@ -173,7 +191,7 @@ const MaintenanceForm = ({
               <InputSelect
                 options={services}
                 value={formData.serviceType}
-                onSelect={(value: any) =>
+                onSelect={(value) =>
                   handleChange({ target: { name: "serviceType", value } })
                 }
                 required
@@ -220,11 +238,11 @@ const MaintenanceForm = ({
         <Button
           onClick={cancelSubmit}
           label="Cancel"
-          testId={ids.buttonSubmitMaintenance}
+          testId={ids.buttonCancelMaintenance}
         />
         <Button
           onClick={handleSubmit}
-          label="Order"
+          label={orderData ? "Save" : "Order"}
           testId={ids.buttonSubmitMaintenance}
           disabled={!isFormValid}
         />

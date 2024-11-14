@@ -1,173 +1,107 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 import Button from "../../components/Button/index";
-import InputField from "../../components/InputField/index";
+import Dropdown from "../../components/Dropdown/index";
+import { mockedOrders } from "../../shared-constants/mockedOrders";
+import "./OrderDetails.scss";
+import ids from "./test-ids.json"
 
-const OrderDetails = () => {
-  const { id } = useParams(); // Get order ID from the URL
-  const navigate = useNavigate(); // Use navigate for React Router v6
-  const [order, setOrder] = useState(null);
-  const [formData, setFormData] = useState({
-    customerName: "",
-    phoneNumber: "",
-    email: "",
-    bikeBrand: "",
-    serviceType: "",
-    dueDate: "",
-    notes: "",
-  });
-  const [isEditing, setIsEditing] = useState(false); // Track if in edit mode
+interface Order {
+  id: string;
+  customerName: string;
+  phoneNumber: string;
+  email: string;
+  bikeBrand: string;
+  serviceType: string;
+  dueDate: string;
+}
 
-  // Fetch order details when the component mounts
+const OrderDetails: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [orderDetails, setOrderDetails] = useState<Order | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
-    const fetchOrderDetails = async () => {
-      try {
-        const response = await axios.get(`/api/orders/${id}`);
-        setOrder(response.data);
-        setFormData(response.data); // Set initial form data from the fetched order
-      } catch (error) {
-        console.error("Error fetching order details:", error);
+    if (id) {
+      const order = mockedOrders.find((order) => order.id === id);
+      if (order) {
+        setOrderDetails(order);
+        setLoading(false);
+      } else {
+        setError("Order not found");
+        setLoading(false);
+        setTimeout(() => {
+          navigate("/orders");
+        });
       }
-    };
-
-    fetchOrderDetails();
-  }, [id]);
-
-  // Handle form field changes
-  const handleChange = (e: { target: { name: any; value: any } }) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  // Handle form submission to update the order
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    try {
-      const response = await axios.put(`/api/orders/${id}`, formData);
-      setOrder(response.data);
-      setIsEditing(false); // Stop editing mode after successful update
-    } catch (error) {
-      console.error("Error updating order:", error);
     }
-  };
+  }, [id, navigate]);
 
-  // Handle delete order
-  const handleDelete = async () => {
-    try {
-      await axios.delete(`/api/orders/${id}`);
-      navigate("/"); // Redirect to the orders list page after deletion
-    } catch (error) {
-      console.error("Error deleting order:", error);
-    }
-  };
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
 
-  const handleSave = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    // Custom save logic here
-    console.log("Save button clicked");
-  };
-
-  if (!order) {
-    return <div>Loading...</div>;
+  if (error) {
+    return (
+      <div className="error-message">
+        <p>{error}</p>
+        <p>Redirecting to orders...</p>
+      </div>
+    );
   }
 
   return (
-    <div>
-      <h1>Order Details</h1>
-      <div>
-        <Button
-          onClick={() => setIsEditing(!isEditing)}
-          label={isEditing ? "Cancel Editing" : "Edit Order"}
-          testId={""}
+    <div className="page-wrap">
+      <div className="header-container">
+        <h1>Order Details</h1>
+        <Dropdown
+          options={[
+            {
+              label: "Edit Order",
+              action: `/orders/details/edit/${id}`,
+              icon: "FaEdit",
+            },
+            {
+              label: "Delete order",
+              action: `orders/delete/${id}`,
+              icon: "FaTrashAlt",
+            },
+          ]}
         />
-
-        <Button onClick={handleDelete} label="Delete Order" testId={""} />
+        <hr />
       </div>
-
-      {isEditing ? (
-        <form onSubmit={handleSubmit}>
-          <InputField
-            type="text"
-            name="customerName"
-            value={formData.customerName}
-            onChange={handleChange}
-            required
-            label={""}
-            testId={""}
-          />
-          <InputField
-            type="text"
-            name="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            required
-            testId={""}
-            label={""}
-          />
-          <InputField
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            testId={""}
-            label={""}
-          />
-          <InputField
-            type="text"
-            name="bikeBrand"
-            value={formData.bikeBrand}
-            onChange={handleChange}
-            required
-            testId={""}
-            label={""}
-          />
-          <select
-            name="serviceType"
-            value={formData.serviceType}
-            onChange={handleChange}
-            required
-          >
-            <option value="Wheel adjustment">Wheel adjustment</option>
-            <option value="Chain replacement">Chain replacement</option>
-            <option value="Brake maintenance">Brake maintenance</option>
-          </select>
-          <InputField
-            type="date"
-            name="dueDate"
-            value={formData.dueDate}
-            onChange={handleChange}
-            required
-            testId={""}
-            label={""}
-          />
-          <textarea
-            name="notes"
-            value={formData.notes}
-            onChange={handleChange}
-          />
-          <Button
-            type="submit"
-            onClick={handleSave}
-            testId="save-button"
-            label="Save Changes"
-          />
-        </form>
-      ) : (
-        <div>
-          {/* <p><strong>Customer Name:</strong> {order.customerName}</p>
-          <p><strong>Phone Number:</strong> {order.phoneNumber}</p>
-          <p><strong>Email:</strong> {order.email}</p>
-          <p><strong>Bike Brand:</strong> {order.bikeBrand}</p>
-          <p><strong>Service Type:</strong> {order.serviceType}</p>
-          <p><strong>Due Date:</strong> {order.dueDate}</p>
-          <p><strong>Notes:</strong> {order.notes || 'No additional notes'}</p> */}
+      <div className="order-info">
+        <div className="info-item">
+          <strong>Customer Name:</strong> {orderDetails?.customerName}
         </div>
-      )}
+        <div className="info-item">
+          <strong>Phone Number:</strong> {orderDetails?.phoneNumber}
+        </div>
+        <div className="info-item">
+          <strong>Email:</strong> {orderDetails?.email}
+        </div>
+        <div className="info-item">
+          <strong>Bike Brand:</strong> {orderDetails?.bikeBrand}
+        </div>
+        <div className="info-item">
+          <strong>Service Type:</strong> {orderDetails?.serviceType}
+        </div>
+        <div className="info-item">
+          <strong>Due Date:</strong> {orderDetails?.dueDate}
+        </div>
+        <div className="info-item">
+          <strong>Order ID:</strong> {orderDetails?.id}
+        </div>
+      </div>
+      <div className="d-flex justify-content-end gap-3 mb-4 mt-2">
+        <Button
+          onClick={() => navigate("/orders")}
+          label="Back to Orders"
+          testId={ids.buttonGoBack}
+        />
+      </div>
     </div>
   );
 };

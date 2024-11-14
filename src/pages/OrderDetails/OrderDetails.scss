@@ -1,0 +1,34 @@
+@use "../../styles/variables" as vars;
+  
+  .order-info {
+    background-color: #fff;
+    padding: vars.$spacing-medium;
+    border-radius: vars.$border-radius;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .info-item {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+  }
+  
+  .info-item strong {
+    color: vars.$tertiary-color;
+  }
+  
+  
+  .error-message {
+    text-align: center;
+    font-size: vars.$font-size-label;
+    color: vars.$error-color;
+  }
+  
+  .error-message p {
+    margin: 5px 0;
+  }
+  
+  .back-button {
+    margin-top: 20px;
+    text-align: center;
+  }
+  

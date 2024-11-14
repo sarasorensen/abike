@@ -1,13 +1,5 @@
 @use "../../styles/variables" as vars;
 
-.maintenance-form {
-  display: flex;
-  flex-direction: column;
-  gap: vars.$spacing-large;
-  width: 100%;
-  margin-bottom: vars.$spacing-medium;
-}
-
 .form-card {
   background-color: #fff;
   border-radius: vars.$border-radius;

@@ -23,6 +23,7 @@
     display: flex;
     align-items: center;
     font-size:vars.$font-size-input;
+    margin-top: vars.$spacing-small;
   }
 
   &__breadcrumb-item {

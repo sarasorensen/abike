@@ -2,7 +2,7 @@ export const mockedOrders = [
   {
     id: "1",
     customerName: "John Doe",
-    phoneNumber: "123-456-7890",
+    phoneNumber: "1234567890",
     email: "john@example.com",
     bikeBrand: "Trek",
     serviceType: "Wheel adjustment",
@@ -12,7 +12,7 @@ export const mockedOrders = [
   {
     id: "2",
     customerName: "Jane Smith",
-    phoneNumber: "987-654-3210",
+    phoneNumber: "9876543210",
     email: "jane@example.com",
     bikeBrand: "Giant",
     serviceType: "Chain repair",
@@ -22,7 +22,7 @@ export const mockedOrders = [
   {
     id: "3",
     customerName: "Maria Hansen",
-    phoneNumber: "984-652-3220",
+    phoneNumber: "9846523220",
     email: "maria@example.com",
     bikeBrand: "Giant",
     serviceType: "Brake maintenance",

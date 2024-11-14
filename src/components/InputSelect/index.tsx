@@ -70,7 +70,7 @@ const InputSelect: React.FC<SelectComponentProps> = ({
         )}
 
         <input
-          data-testid="select-input"
+          data-testid={testId}
           className={`select-input ${classesName || ""}`}
           placeholder={displayLabel ? '' : displayLabel || placeholder}
           value={selectedLabel || ""}

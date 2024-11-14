@@ -11,36 +11,44 @@ const NewOrder: React.FC = () => {
   const [orders, setOrders] = useState<MaintenanceOrder[]>(mockedOrders); 
 
   useEffect(() => {
+    // Fetch the order data by ID
     const fetchOrder = () => {
       const foundOrder = orders.find((order) => order.id === id);
-      setOrder(foundOrder || null); 
+      if (foundOrder) {
+        setOrder(foundOrder);
+      } else {
+        // Handle case when order is not found
+        navigate("/orders");
+      }
     };
 
     fetchOrder();
-  }, [id, orders]);
+  }, [id, orders, navigate]);
 
   const handleUpdateOrder = (updatedOrder: MaintenanceOrder) => {
     const updatedOrders = orders.map((order) =>
       order.id === id ? { ...order, ...updatedOrder } : order
     );
 
-    setOrders(updatedOrders); 
+    setOrders(updatedOrders);
 
     console.log("Updated Order:", updatedOrder);
 
-    navigate(`/order/${id}`);
+    // Redirect to the order details page after update
+    navigate(`/orders/edit/${id}`);
   };
 
-  // if (!order) {
-  //   return <div>Loading...</div>; 
-  // }
+  // If the order is not found or still loading, display a loading message
+  if (!order) {
+    return <div>Loading...</div>; 
+  }
 
   return (
     <div>
       <MaintenanceForm
-        orderData={order} 
-        title="New Order"
-        onSubmit={handleUpdateOrder} 
+        orderData={order}  // Pass the order data with dueDate and serviceType
+        title="Edit Order"
+        onSubmit={handleUpdateOrder}  // Pass the update function
       />
     </div>
   );

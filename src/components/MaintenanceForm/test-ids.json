@@ -6,5 +6,6 @@
     "selectServiceType": "select_service_type",
     "inputDueDate": "inputDueDate",
     "textAreaNotes": "text_area_notes",
+    "buttonCancelMaintenance": "button_cancel_maintenance",
     "buttonSubmitMaintenance": "button_submit_maintenance"
 }

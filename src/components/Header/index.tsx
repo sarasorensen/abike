@@ -1,19 +1,19 @@
 import React from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { FaBicycle } from "react-icons/fa";
 import { testId } from "../../utilities/testId";
 import ids from "./test-ids.json";
+import { BreadcrumbData } from "use-react-router-breadcrumbs"; 
 import "./header.scss";
 
-const Header: React.FC = () => {
-  const location = useLocation();
+interface HeaderProps {
+  breadcrumbs: BreadcrumbData<string>[]; // Ensure breadcrumbs are of type BreadcrumbData<string>[]
+}
 
-  const pathParts = location.pathname.split("/").filter(Boolean);
-
+const Header: React.FC<HeaderProps> = ({ breadcrumbs }) => {
   return (
     <header className="header">
       <div className="header__logo-breadcrumbs">
-        {/* Logo with the Bicycle icon */}
         <Link to="/orders" className="header__title">
           ABike
           <span>
@@ -22,28 +22,26 @@ const Header: React.FC = () => {
           </span>
         </Link>
 
-        {/* Breadcrumbs */}
         <nav className="header__breadcrumbs">
-          {pathParts.length > 0 && (
+          {breadcrumbs.length > 0 && (
             <>
-              {pathParts.map((part, index) => {
-                const isLast = index === pathParts.length - 1;
-                const path = `/${pathParts.slice(0, index + 1).join("/")}`;
+              {breadcrumbs.map(({ breadcrumb, match }, index) => {
+                const isLast = index === breadcrumbs.length - 1;
+                const path = match.pathname; // Use pathname from match
+
                 return (
                   <span key={path} className="header__breadcrumb-item">
-                    {index > 0 && <span className="header__separator"> / </span>} 
+                    {index > 0 && <span className="header__separator"> / </span>}
                     {!isLast ? (
                       <NavLink
-                        to={path}
+                        to={path} // Link to the path using match.pathname
                         className="header__link"
                         {...testId(ids.navLinkHeader)}
                       >
-                        {part.charAt(0).toUpperCase() + part.slice(1)}
+                        {breadcrumb}
                       </NavLink>
                     ) : (
-                      <span className="header__link">
-                        {part.charAt(0).toUpperCase() + part.slice(1)}
-                      </span>
+                      <span className="header__link">{breadcrumb}</span>
                     )}
                   </span>
                 );

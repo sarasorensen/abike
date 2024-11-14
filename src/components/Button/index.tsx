@@ -2,7 +2,7 @@ import React from "react";
 import "./Button.scss";
 
 interface ButtonProps {
-  label: React.ReactNode; // Change label to React.ReactNode to support strings and JSX
+  label: React.ReactNode; 
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   className?: string;
   testId: string;
