@@ -1,25 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   FaEllipsisH,
   FaArrowDown,
   FaEye,
   FaEdit,
   FaTrashAlt,
-  FaPlus
+  FaPlus,
 } from "react-icons/fa";
 import Button from "../Button/index";
-import { testId } from "../../utilities//testId";
 import ids from "./test-ids.json";
 import "./Dropdown.scss";
 
 interface DropdownProps {
   options: {
     label: string;
-    action: string;
+    action?: string;
     icon?: string;
+    id?: string;
   }[];
   type?: string;
+  onSelect?: (label: string, id?: string) => void;
 }
 
 type IconMapping = {
@@ -30,10 +31,11 @@ const iconMapping: IconMapping = {
   FaEye,
   FaEdit,
   FaTrashAlt,
-  FaPlus
+  FaPlus,
 };
 
-const Dropdown: React.FC<DropdownProps> = ({ options, type }) => {
+const Dropdown: React.FC<DropdownProps> = ({ options, type, onSelect }) => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -60,6 +62,17 @@ const Dropdown: React.FC<DropdownProps> = ({ options, type }) => {
   const getIcon = (iconName: string) => {
     const IconComponent = iconMapping[iconName];
     return IconComponent ? <IconComponent /> : null;
+  };
+
+  const handleOptionClick = (options: any, id?: string) => {
+    if (options.action) {
+      navigate(options.action);
+    }
+
+    if (onSelect) {
+      onSelect(options.label, id);
+    }
+    setIsOpen(false);
   };
 
   return (
@@ -95,19 +108,18 @@ const Dropdown: React.FC<DropdownProps> = ({ options, type }) => {
       {isOpen && (
         <ul className="dropdown-menu" data-testid="button_dropdown_elements">
           {options.map((option, index) => (
-            <Link
-              to={option.action}
-              className="dropdown-link"
-              {...testId(ids.buttonOptionsItem)}
+            <li
               key={index}
+              className="dropdown-item"
+              onClick={() => handleOptionClick(option, option.id)}
             >
-              <li className="dropdown-item">
-                {option.icon && (
-                  <span className="dropdown-item-icon">{getIcon(option.icon)}</span>
-                )}
-                <span>{option.label}</span>
-              </li>
-            </Link>
+              {option.icon && (
+                <span className="dropdown-item-icon">
+                  {getIcon(option.icon)}
+                </span>
+              )}
+              <span>{option.label}</span>
+            </li>
           ))}
         </ul>
       )}

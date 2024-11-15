@@ -2,6 +2,7 @@
 
 button {
   min-width: 15%;
+  font-weight: 500;
   background-color: vars.$primary-color;
   color: #fff;
   padding: vars.$spacing-small vars.$spacing-medium;
@@ -12,7 +13,7 @@ button {
   transition: background-color 0.3s ease;
   display: block;
   &:hover {
-    background-color: darken(vars.$primary-color, 10%);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
   &:disabled {
     background-color: vars.$disabled-bg-color;
@@ -21,3 +22,7 @@ button {
   }
 }
 
+.button-cancel{
+  background-color: vars.$border-color;
+  color: vars.$tertiary-color;
+}

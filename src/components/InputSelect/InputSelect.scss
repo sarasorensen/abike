@@ -1,18 +1,32 @@
 @use "../../styles/variables" as vars;
 
 .select-component {
+  display: flex;
+  flex-direction: column;
   position: relative;
-  margin-top: -0.2em;
+
+  .select-field-label {
+    font-size: vars.$font-size-label;
+    font-weight: 600;
+    color: vars.$placeholder-color;
+    margin-bottom: vars.$spacing-small;
+    transition: color 0.2s ease;
+  }
 
   .select-input {
-    width: 100%;
     padding: vars.$spacing-small;
+    font-size: vars.$font-size-input;
     background-color: vars.$placeholder-secondary-color;
+    border-radius: vars.$border-radius;
     border: none;
     outline: none;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
-
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23131313%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem top 50%;
+    background-size: 0.65rem auto;
     &:not(:placeholder-shown) {
       color: vars.$tertiary-color;
     }
@@ -31,15 +45,19 @@
   }
 
   .select-input--white {
-    width: 100%;
     padding: vars.$spacing-small;
+    font-size: vars.$font-size-input;
     background-color: #fff;
     border-radius: vars.$border-radius;
     border: none;
     outline: none;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
-
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23131313%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem top 50%;
+    background-size: 0.65rem auto;
     &:not(:placeholder-shown) {
       color: vars.$tertiary-color;
     }
@@ -54,33 +72,22 @@
       border-color: vars.$placeholder-color;
       box-shadow: 0 2px 4px vars.$placeholder-secondary-color;
     }
-    &.select-arrow {
-      background-color: transparent;
-      color: vars.$placeholder-color;
-      position: absolute;
-      left: 80%;
-      top: 1%;
-      font-size: 16px;
-      transition: transform 0.3s ease;
+
+    @media (max-width: 768px) {
+      margin-top: vars.$spacing-small;
+      margin-bottom: 0;
     }
   }
 
-  .select-field-label {
-    font-size: vars.$font-size-label;
-    font-weight: 600;
-    color: vars.$placeholder-color;
-    margin-bottom: vars.$spacing-small;
-    transition: color 0.2s ease;
-  }
 
   .select-menu {
     position: absolute;
     min-width: 100%;
+    top: 100%;
     list-style-type: none;
     padding: vars.$spacing-medium;
     background-color: #fff;
     color: vars.$tertiary-color;
-    margin-top: vars.$spacing-small;
     overflow-y: auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;
@@ -96,18 +103,9 @@
       }
     }
   }
-}
-.select-container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
+
+  @media (max-width: 768px) {
+    margin-bottom: vars.$spacing-medium;
+  }
 }
 
-.select-arrow {
-  color: vars.$placeholder-color;
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  font-size: 16px;
-  transition: transform 0.3s ease;
-}

@@ -17,8 +17,9 @@ table {
     white-space: nowrap;
     cursor: pointer;
   }
+  
   td {
-    vertical-align: middle;
+    vertical-align: baseline;
   }
 
   th {
@@ -31,8 +32,9 @@ table {
   tr {
     background-color: #fff;
     margin-bottom: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
-
+  
   a {
     color: vars.$secondary-color;
     text-decoration: none;
@@ -41,16 +43,69 @@ table {
       text-decoration: underline;
     }
   }
+
+  @media (max-width: 768px) {
+    display: block;
+    width: 100%;
+
+    thead{
+      display: block;
+      width: 100%;
+    }
+
+    tbody{
+      display: block;
+      width: 100%;
+    }
+
+    .filters-heading{
+      display: none;
+    }
+    tr {
+      display: block;
+      margin-bottom: vars.$spacing-xlarge;
+    }
+
+    th,
+    td {
+      display: block;
+      text-align: right;
+    }
+
+
+  td {
+    position: relative;
+    padding-left: 50%; 
+
+    &::before {
+      content: attr(data-label);
+      position: absolute;
+      text-align: left;
+      left: 0;
+      width: 45%; 
+      padding-left: vars.$spacing-small;
+      font-weight: bold;
+      color: vars.$tertiary-color;
+    }
+  }
+
+    th:first-child {
+      padding-left: vars.$spacing-small;
+    }
+  }
 }
 
+// Other related styles
 .filters-container,
 .filters-heading {
   background-color: transparent !important;
-  & th {
+  box-shadow: none;
+  th {
     padding-top: 0;
     padding-bottom: 0;
   }
 }
+
 .reset-filter-icon {
   cursor: pointer;
   font-size: 1.7rem;

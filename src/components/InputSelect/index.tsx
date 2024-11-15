@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import { FaArrowDown } from "react-icons/fa";
 import "./InputSelect.scss";
 
 interface SelectOption {
@@ -18,6 +17,7 @@ interface SelectComponentProps {
   errorMessage?: string;
   classesName?: string;
   displayLabel?: boolean;
+  loading?: boolean
 }
 
 const InputSelect: React.FC<SelectComponentProps> = ({
@@ -31,6 +31,7 @@ const InputSelect: React.FC<SelectComponentProps> = ({
   errorMessage = "This field is required",
   classesName,
   displayLabel = true,
+  loading
 }) => {
   const isError = showError && !value;
   const [isOpen, setIsOpen] = useState(false);
@@ -62,25 +63,20 @@ const InputSelect: React.FC<SelectComponentProps> = ({
 
   return (
     <div className="select-component" ref={selectRef}>
-      <div className="select-container">
-        {displayLabel && (
-          <label htmlFor={testId} className="select-field-label">
-            {placeholder} {required && <span>*</span>}
-          </label>
-        )}
+      {displayLabel && (
+        <label htmlFor={testId} className="select-field-label">
+          {placeholder} {required && <span>*</span>}
+        </label>
+      )}
 
-        <input
-          data-testid={testId}
-          className={`select-input ${classesName || ""}`}
-          placeholder={displayLabel ? '' : displayLabel || placeholder}
-          value={selectedLabel || ""}
-          readOnly
-          onClick={toggleSelect}
-        />
-        <span className={`select-arrow ${classesName || ""}`}>
-          <FaArrowDown />
-        </span>
-      </div>
+      <input
+        data-testid={testId}
+        className={`select-input ${classesName || ""} ${loading ? "loading-select" : ""}`}
+        placeholder={displayLabel ? "" : displayLabel || placeholder}
+        value={selectedLabel || ""}
+        readOnly
+        onClick={toggleSelect}
+      />
 
       {isOpen && (
         <ul className="select-menu" data-testid="select-menu">

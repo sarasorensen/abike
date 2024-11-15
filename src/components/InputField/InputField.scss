@@ -33,7 +33,6 @@
     border: none;
     outline: none;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
-
     &::placeholder {
       color: vars.$placeholder-color;
       padding-left: vars.$spacing-large;
@@ -72,6 +71,7 @@
     }
   }
   .error-message {
+    text-align: left;
     font-size: vars.$font-size-error;
     color: vars.$error-color;
     margin-top: vars.$spacing-small;
@@ -87,4 +87,26 @@
   color: vars.$placeholder-color;
   cursor: pointer;
   pointer-events: auto;
+}
+
+.loading-input,
+.loading-select {
+  background-color: #f7f7f7;
+  pointer-events: none;
+  animation: fadeBackground 1.5s ease-in-out infinite;
+  &::placeholder {
+    display: none;
+  }
+}
+
+@keyframes fadeBackground {
+  0% {
+    background-color: #f7f7f7;
+  }
+  50% {
+    background-color: #e0e0e0;
+  }
+  100% {
+    background-color: #f7f7f7;
+  }
 }

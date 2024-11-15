@@ -10,13 +10,14 @@ interface InputFieldProps {
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
-  onClear?: () => void; 
+  onClear?: () => void;
   type?: string;
   required?: boolean;
   testId: string;
   errorMessage?: string;
   showError?: boolean;
   classesName?: string;
+  loading?: boolean;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -32,12 +33,11 @@ const InputField: React.FC<InputFieldProps> = ({
   errorMessage = "This field is required",
   showError = false,
   classesName,
+  loading,
 }) => {
-  const isError = showError && !value;
-
   const handleClear = () => {
     if (onClear) {
-      onClear(); 
+      onClear();
     }
   };
 
@@ -48,18 +48,20 @@ const InputField: React.FC<InputFieldProps> = ({
       </label>
       {type === "textarea" ? (
         <textarea
+          className={loading ? "loading-input" : ""}
           value={value}
           name={name}
           onChange={onChange}
           required={required}
           id={testId}
           data-testid={testId}
-          aria-describedby={isError ? `${testId}-error` : undefined}
+          aria-describedby={showError ? `${testId}-error` : undefined}
         />
       ) : (
         <>
           {placeholder && <FaSearch className="input-icon" />}
           <input
+            className={loading ? "loading-input" : ""}
             type={type}
             value={value}
             name={name}
@@ -68,7 +70,7 @@ const InputField: React.FC<InputFieldProps> = ({
             required={required}
             id={testId}
             data-testid={testId}
-            aria-describedby={isError ? `${testId}-error` : undefined}
+            aria-describedby={showError ? `${testId}-error` : undefined}
           />
           {value && onClear && (
             <FaTimes
@@ -79,7 +81,7 @@ const InputField: React.FC<InputFieldProps> = ({
           )}
         </>
       )}
-      {isError && (
+      {showError && (
         <span id={`${testId}-error`} className="error-message" role="alert">
           {errorMessage}
         </span>

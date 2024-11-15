@@ -3,28 +3,31 @@ import { useParams, useNavigate } from "react-router-dom";
 import { FaBicycle } from "react-icons/fa";
 import { MdOutlineNoteAlt } from "react-icons/md";
 import { RxAvatar } from "react-icons/rx";
+import { useDeleteConfirmationModal } from "../../hooks/useDeleteConfirmationModal";
 import Button from "../../components/Button/index";
+import DeleteConfirmationModal from "../../components/DeleteConfirmationModal/index";
+import ActionSuccessMsg from "../../components/ActionSuccessMsg/index";
 import Dropdown from "../../components/Dropdown/index";
+import { MaintenanceOrder } from "../../types/maintenanceOrder";
 import { mockedOrders } from "../../shared-constants/mockedOrders";
 import "./OrderDetails.scss";
 import ids from "./test-ids.json";
 
-interface Order {
-  id: string;
-  customerName: string;
-  phoneNumber: string;
-  email: string;
-  bikeBrand: string;
-  serviceType: string;
-  dueDate: string;
-  notes?: string;
-}
-
 const OrderDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [orderDetails, setOrderDetails] = useState<Order | null>(null);
+  const [orderDetails, setOrderDetails] = useState<MaintenanceOrder | null>(
+    null
+  );
   const [loading, setLoading] = useState(true);
+  const {
+    showModal,
+    deleteId,
+    showSuccessMessage,
+    handleSelect,
+    confirmDelete,
+    cancelDelete,
+  } = useDeleteConfirmationModal();
 
   useEffect(() => {
     if (id) {
@@ -51,12 +54,9 @@ const OrderDetails: React.FC = () => {
               action: `/orders/details/${id}/edit`,
               icon: "FaEdit",
             },
-            {
-              label: "Delete Order",
-              action: `orders/delete/${id}`,
-              icon: "FaTrashAlt",
-            },
+            { label: "Delete order", icon: "FaTrashAlt", id: id },
           ]}
+          onSelect={handleSelect}
         />
         <hr />
       </div>
@@ -123,6 +123,15 @@ const OrderDetails: React.FC = () => {
           testId={ids.buttonGoBack}
         />
       </div>
+
+      {showModal && (
+        <DeleteConfirmationModal
+          onConfirm={confirmDelete}
+          onCancel={cancelDelete}
+          orderId={deleteId}
+        />
+      )}
+      {showSuccessMessage && <ActionSuccessMsg action="Delete" />}
     </div>
   );
 };

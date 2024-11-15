@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import InputField from "../InputField";
 import Button from "../Button";
 import InputSelect from "../InputSelect/index";
+import ActionSuccessMsg from "../ActionSuccessMsg/index";
 import { MaintenanceOrder } from "../../types/maintenanceOrder";
 import { services } from "../../shared-constants/services";
 import ids from "./test-ids.json";
@@ -10,12 +11,15 @@ import "./MaintenanceForm.scss";
 
 const MaintenanceForm = ({
   orderData = null,
-  onSubmit
+  onSubmit,
 }: {
   orderData?: MaintenanceOrder | null;
   onSubmit: (data: MaintenanceOrder) => void;
 }) => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [formData, setFormData] = useState<MaintenanceOrder>({
     id: "",
     customerName: "",
@@ -26,7 +30,6 @@ const MaintenanceForm = ({
     dueDate: "",
     notes: "",
   });
-
   const [touched, setTouched] = useState<Record<string, boolean>>({
     customerName: false,
     phoneNumber: false,
@@ -37,64 +40,13 @@ const MaintenanceForm = ({
     notes: false,
   });
 
-  const [isFormValid, setIsFormValid] = useState(false);
-
   useEffect(() => {
     if (orderData) {
+      setLoading(true);
       setFormData(orderData);
+      setLoading(false);
     }
   }, [orderData]);
-
-  const handleChange = (e: { target: { name: string; value: string } }) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    setTouched((prev) => ({ ...prev, [name]: true }));
-  };
-
-  const cancelSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    setFormData({
-      id: "",
-      customerName: "",
-      phoneNumber: "",
-      email: "",
-      bikeBrand: "",
-      serviceType: "",
-      dueDate: "",
-      notes: "",
-    });
-
-    navigate("/");
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(formData);
-  };
-
-  const checkFormValidity = () => {
-    const requiredFields = [
-      "customerName",
-      "phoneNumber",
-      "email",
-      "bikeBrand",
-      "serviceType",
-      "dueDate",
-    ];
-    const isValid = requiredFields.every(
-      (field) => formData[field as keyof MaintenanceOrder]
-    );
-    setIsFormValid(isValid);
-  };
-
-  useEffect(() => {
-    checkFormValidity();
-    // eslint-disable-next-line
-  }, [formData]);
 
   useEffect(() => {
     if (orderData) {
@@ -114,6 +66,89 @@ const MaintenanceForm = ({
     }
   }, [orderData]);
 
+  const validateInput = (value: string) => {
+    const regex = /[<>]|<script.*?>.*?<\/script>/gi;
+    return !regex.test(value);
+  };
+
+  const validateEmail = (email: string) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const validatePhoneNumber = (phoneNumber: string) => {
+    const regex = /^\+?[1-9]\d{1,14}$/;
+    return regex.test(phoneNumber);
+  };
+
+  const handleChange = (e: { target: { name: string; value: string } }) => {
+    const { name, value } = e.target;
+
+    if (!validateInput(value)) {
+      setTouched((prev) => ({ ...prev, [name]: true }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+      setTouched((prev) => ({ ...prev, [name]: true }));
+    }
+  };
+
+  const checkFormValidity = () => {
+    const requiredFields = [
+      "customerName",
+      "phoneNumber",
+      "email",
+      "bikeBrand",
+      "serviceType",
+      "dueDate",
+    ];
+    
+    const isValid = requiredFields.every(
+      (field) => formData[field as keyof MaintenanceOrder]
+    );
+
+    const isEmailValid = validateEmail(formData.email);
+    const isPhoneNumberValid = validatePhoneNumber(formData.phoneNumber);
+
+    setIsFormValid(isValid && isEmailValid && isPhoneNumberValid);
+  };
+
+  useEffect(() => {
+    checkFormValidity();
+    // eslint-disable-next-line
+  }, [formData]);
+
+  const cancelSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormData({
+      id: "",
+      customerName: "",
+      phoneNumber: "",
+      email: "",
+      bikeBrand: "",
+      serviceType: "",
+      dueDate: "",
+      notes: "",
+    });
+    navigate("/");
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    onSubmit(formData);
+
+    setShowSuccessMessage(true);
+
+    setTimeout(() => {
+      setShowSuccessMessage(false);
+      navigate("/");
+      setLoading(false);
+    }, 2000);
+  };
+
   return (
     <form onSubmit={handleSubmit} className="page-wrap">
       <h1> {orderData ? "Edit Order" : "New Order"}</h1>
@@ -125,6 +160,7 @@ const MaintenanceForm = ({
           <div className="row">
             <div className="col-sm-6">
               <InputField
+                loading={loading}
                 required
                 label="Customer Name"
                 name="customerName"
@@ -133,24 +169,35 @@ const MaintenanceForm = ({
                 onChange={handleChange}
                 testId={ids.inputCustomerName}
                 errorMessage="Customer name cannot be empty"
-                showError={touched.customerName && !formData.customerName}
+                showError={
+                  touched.customerName &&
+                  (!formData.customerName ||
+                    !validateInput(formData.customerName))
+                }
               />
             </div>
             <div className="col-sm-6">
               <InputField
+                loading={loading}
                 required
                 label="Phone Number"
                 name="phoneNumber"
-                type="tel"
+                type="number"
                 value={formData.phoneNumber}
                 onChange={handleChange}
                 testId={ids.inputPhoneNumber}
-                errorMessage="Phone number cannot be empty"
-                showError={touched.phoneNumber && !formData.phoneNumber}
+                errorMessage="Phone number cannot be empty or invalid"
+                showError={
+                  touched.phoneNumber &&
+                  (!formData.phoneNumber ||
+                    !validatePhoneNumber(formData.phoneNumber) ||
+                    !validateInput(formData.phoneNumber))
+                }
               />
             </div>
             <div className="col-sm-12">
               <InputField
+                loading={loading}
                 required
                 label="Email"
                 name="email"
@@ -158,8 +205,13 @@ const MaintenanceForm = ({
                 value={formData.email}
                 onChange={handleChange}
                 testId={ids.inputEmail}
-                errorMessage="Email cannot be empty"
-                showError={touched.email && !formData.email}
+                errorMessage="Email cannot be empty or invalid"
+                showError={
+                  touched.email &&
+                  (!formData.email ||
+                    !validateEmail(formData.email) ||
+                    !validateInput(formData.email))
+                }
               />
             </div>
           </div>
@@ -174,6 +226,7 @@ const MaintenanceForm = ({
           <div className="row">
             <div className="col-sm-6">
               <InputField
+                loading={loading}
                 required
                 label="Bike Brand"
                 name="bikeBrand"
@@ -182,11 +235,29 @@ const MaintenanceForm = ({
                 onChange={handleChange}
                 testId={ids.inputBikeBrand}
                 errorMessage="Bike brand cannot be empty"
-                showError={touched.bikeBrand && !formData.bikeBrand}
+                showError={
+                  touched.bikeBrand &&
+                  (!formData.bikeBrand || !validateInput(formData.bikeBrand))
+                }
               />
             </div>
             <div className="col-sm-6">
+              <InputField
+                loading={loading}
+                required
+                label="Due Date"
+                name="dueDate"
+                type="date"
+                value={formData.dueDate}
+                onChange={handleChange}
+                testId={ids.inputDueDate}
+                errorMessage="Due date cannot be empty"
+                showError={touched.notes && !validateInput(formData.notes)}
+              />
+            </div>
+            <div className="col-sm-12">
               <InputSelect
+                loading={loading}
                 options={services}
                 value={formData.serviceType}
                 onSelect={(value) =>
@@ -199,19 +270,6 @@ const MaintenanceForm = ({
                 testId={ids.selectServiceType}
               />
             </div>
-            <div className="col-sm-12">
-              <InputField
-                required
-                label="Due Date"
-                name="dueDate"
-                type="date"
-                value={formData.dueDate}
-                onChange={handleChange}
-                testId={ids.inputDueDate}
-                errorMessage="Due date cannot be empty"
-                showError={touched.dueDate && !formData.dueDate}
-              />
-            </div>
           </div>
         </div>
       </div>
@@ -222,6 +280,7 @@ const MaintenanceForm = ({
         </div>
         <div className="card-body">
           <InputField
+            loading={loading}
             label="Notes"
             name="notes"
             type="textarea"
@@ -236,6 +295,7 @@ const MaintenanceForm = ({
         <Button
           onClick={cancelSubmit}
           label="Cancel"
+          className="button-cancel"
           testId={ids.buttonCancelMaintenance}
         />
         <Button
@@ -245,6 +305,9 @@ const MaintenanceForm = ({
           disabled={!isFormValid}
         />
       </div>
+      {showSuccessMessage && (
+        <ActionSuccessMsg action={orderData ? "Save" : "Order"} />
+      )}
     </form>
   );
 };

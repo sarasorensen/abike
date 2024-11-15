@@ -1,0 +1,72 @@
+@use "../../styles/variables" as vars;
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #fff;
+  border-radius: vars.$border-radius;
+  padding: vars.$spacing-xlarge;
+  width: 600px;
+  max-width: 100%;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content h3 {
+  margin-bottom: vars.$spacing-xxlarge;
+  color: vars.$primary-color;
+}
+.modal-content p {
+    margin-bottom: 0;
+}
+.modal-footer {
+  margin-top: vars.$spacing-xxlarge;
+  border: none;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: vars.$tertiary-color;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.success-message {
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    left: 20px;
+    bottom: 20px;
+    background-color: white;
+    color: vars.$tertiary-color;
+    padding: vars.$spacing-large;
+    border-radius: vars.$border-radius;
+    font-size: vars.$font-size-input;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    & p{
+        margin: 0;
+    }
+  }
+  
+  .success-message .check-icon {
+    margin-left: vars.$spacing-small; 
+    margin-top: vars.$spacing-xsmall; 
+    color: vars.$success-color;
+  }

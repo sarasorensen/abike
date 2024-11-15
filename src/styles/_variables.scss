@@ -4,6 +4,7 @@ $secondary-color: #8bb9d3; // Muted Light Blue (Secondary)
 $tertiary-color: #6e6e84; // Pale Blue (Tertiary)
 
 $error-color: #d32f2f; // Red for error messages
+$success-color: #4caf50;
 $placeholder-color: #aaaaba; // Light Gray for placeholders
 $placeholder-secondary-color: #f1f2f9; // Very Light Gray for placeholders
 $disabled-bg-color: #e3e6ef; // Very Light Gray for disabled inputs
@@ -16,10 +17,12 @@ $font-size-input: 1rem; // Input font size
 $font-size-error: 0.75rem; // Error message font size
 
 // Spacing
+$spacing-xsmall: 0.2rem; 
 $spacing-small: 0.5rem; 
 $spacing-medium: 0.75rem; 
 $spacing-large: 1.5rem; 
 $spacing-xlarge: 2rem;
+$spacing-xxlarge: 3rem;
 
 // Border Radius & Width
 $border-radius: 8px; // Rounded corners

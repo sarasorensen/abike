@@ -1,7 +1,9 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { FaFilterCircleXmark } from "react-icons/fa6";
+import {useDeleteConfirmationModal} from "../../hooks/useDeleteConfirmationModal";
+import DeleteConfirmationModal from "../../components/DeleteConfirmationModal/index";
+import ActionSuccessMsg from "../../components/ActionSuccessMsg/index";
 import Dropdown from "../../components/Dropdown/index";
 import InputField from "../../components/InputField/index";
 import InputSelect from "../../components/InputSelect/index";
@@ -26,6 +28,14 @@ const OrdersList: React.FC = () => {
   const [selectedServiceType, setSelectedServiceType] = useState<string>("");
   const [dueDateFilter, setDueDateFilter] = useState<string>("");
   const [filteredOrders, setFilteredOrders] = useState(mockedOrders);
+  const {
+    showModal,
+    deleteId,
+    showSuccessMessage,
+    handleSelect,
+    confirmDelete,
+    cancelDelete,
+  } = useDeleteConfirmationModal(); 
 
   const handleRowClick = (id: string, event: React.MouseEvent) => {
     const target = event.target as HTMLElement;
@@ -170,10 +180,7 @@ const OrdersList: React.FC = () => {
       <table className="table table-hover">
         <thead>
           <tr className="filters-heading">
-            <th
-              onClick={() => handleSort("customerName")}
-              style={{ minWidth: "200px" }}
-            >
+            <th onClick={() => handleSort("customerName")}>
               Customer Name{" "}
               {sortColumn === "customerName" &&
                 (sortDirection === "asc" ? "↑" : "↓")}
@@ -192,17 +199,14 @@ const OrdersList: React.FC = () => {
               {sortColumn === "bikeBrand" &&
                 (sortDirection === "asc" ? "↑" : "↓")}
             </th>
-            <th
-              onClick={() => handleSort("serviceType")}
-              style={{ minWidth: "200px" }}
-            >
-              Service type{" "}
-              {sortColumn === "serviceType" &&
-                (sortDirection === "asc" ? "↑" : "↓")}
-            </th>
             <th onClick={() => handleSort("dueDate")}>
               Due Date{" "}
               {sortColumn === "dueDate" &&
+                (sortDirection === "asc" ? "↑" : "↓")}
+            </th>
+            <th onClick={() => handleSort("serviceType")}>
+              Service type{" "}
+              {sortColumn === "serviceType" &&
                 (sortDirection === "asc" ? "↑" : "↓")}
             </th>
             <th></th>
@@ -258,6 +262,16 @@ const OrdersList: React.FC = () => {
               />
             </th>
             <th>
+              <InputField
+                type="date"
+                value={dueDateFilter}
+                onChange={handleDueDateFilterChange}
+                name="dueDate"
+                classesName="input-field--white pl-0"
+                testId={ids.inputDueDate}
+              />
+            </th>
+            <th>
               <InputSelect
                 options={[
                   { label: "All", value: "" },
@@ -274,16 +288,7 @@ const OrdersList: React.FC = () => {
                 testId={ids.selectServiceType}
               />
             </th>
-            <th>
-              <InputField
-                type="date"
-                value={dueDateFilter}
-                onChange={handleDueDateFilterChange}
-                name="dueDate"
-                classesName="input-field--white pl-0"
-                testId={ids.inputDueDate}
-              />
-            </th>
+
             <th>
               <span
                 onClick={resetFilters}
@@ -302,8 +307,8 @@ const OrdersList: React.FC = () => {
               <td data-label="Phone Number">{order.phoneNumber}</td>
               <td data-label="Email">{order.email}</td>
               <td data-label="Bike Brand">{order.bikeBrand}</td>
-              <td data-label="Service type">{order.serviceType}</td>
               <td data-label="Due Date">{order.dueDate}</td>
+              <td data-label="Service type">{order.serviceType}</td>
               <td>
                 <Dropdown
                   type="table"
@@ -318,18 +323,24 @@ const OrdersList: React.FC = () => {
                       action: `/orders/details/${order.id}/edit`,
                       icon: "FaEdit",
                     },
-                    {
-                      label: "Delete order",
-                      action: `orders/delete/${order.id}`,
-                      icon: "FaTrashAlt",
-                    },
+                    { label: "Delete order", icon: "FaTrashAlt", id: order.id },
                   ]}
+                  onSelect={handleSelect}
                 />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {showModal && (
+        <DeleteConfirmationModal
+          onConfirm={confirmDelete}
+          onCancel={cancelDelete}
+          orderId={deleteId}
+        />
+      )}
+      {showSuccessMessage && <ActionSuccessMsg action="Delete"  />}
     </div>
   );
 };
