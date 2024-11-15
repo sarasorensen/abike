@@ -1,5 +1,5 @@
 export interface MaintenanceOrder {
-  id: string | undefined;
+  id: string;
   customerName: string;
   phoneNumber: string;
   email: string;

@@ -9,17 +9,17 @@ import DeleteConfirmationModal from "../../components/DeleteConfirmationModal/in
 import ActionSuccessMsg from "../../components/ActionSuccessMsg/index";
 import Dropdown from "../../components/Dropdown/index";
 import { MaintenanceOrder } from "../../types/maintenanceOrder";
-import { mockedOrders } from "../../shared-constants/mockedOrders";
+import { getOrdersFromStorage } from '../../utilities/ordersStorage';
 import "./OrderDetails.scss";
 import ids from "./test-ids.json";
 
 const OrderDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [orders, setOrders] = useState<MaintenanceOrder[]>([]);
   const [orderDetails, setOrderDetails] = useState<MaintenanceOrder | null>(
     null
   );
-  const [loading, setLoading] = useState(true);
   const {
     showModal,
     deleteId,
@@ -31,17 +31,17 @@ const OrderDetails: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      const order = mockedOrders.find((order) => order.id === id);
+      const order = orders.find((order) => order.id === id);
       if (order) {
         setOrderDetails(order);
-        setLoading(false);
       }
     }
-  }, [id, navigate]);
+  }, [orders, id, navigate]);
 
-  if (loading) {
-    return <div className="loading">Loading...</div>;
-  }
+  useEffect(() => {
+    const storedOrders = getOrdersFromStorage();
+    setOrders(storedOrders);
+  }, []);
 
   return (
     <div className="page-wrap w-50">

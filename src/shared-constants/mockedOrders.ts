@@ -6,7 +6,7 @@ export const mockedOrders = [
     email: "john@example.com",
     bikeBrand: "Trek",
     serviceType: "Wheel adjustment",
-    dueDate: "01-12-2024",
+    dueDate: "2024-01-11",
     notes: "Check the brakes as well",
   },
   {
@@ -16,7 +16,7 @@ export const mockedOrders = [
     email: "jane@example.com",
     bikeBrand: "Giant",
     serviceType: "Chain repair",
-    dueDate: "10-12-2024",
+    dueDate: "2024-10-12",
     notes: "Replace the rear chain",
   },
   {
@@ -26,7 +26,8 @@ export const mockedOrders = [
     email: "maria@example.com",
     bikeBrand: "Giant",
     serviceType: "Brake maintenance",
-    dueDate: "01-01-2025",
+    dueDate: "2025-01-01",
     notes: "",
   },
 ];
+

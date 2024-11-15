@@ -1,22 +1,26 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaFilterCircleXmark } from "react-icons/fa6";
-import {useDeleteConfirmationModal} from "../../hooks/useDeleteConfirmationModal";
+import { useDeleteConfirmationModal } from "../../hooks/useDeleteConfirmationModal";
 import DeleteConfirmationModal from "../../components/DeleteConfirmationModal/index";
 import ActionSuccessMsg from "../../components/ActionSuccessMsg/index";
+import Button from "../../components/Button/index";
 import Dropdown from "../../components/Dropdown/index";
 import InputField from "../../components/InputField/index";
 import InputSelect from "../../components/InputSelect/index";
-import { mockedOrders } from "../../shared-constants/mockedOrders";
+import { getOrdersFromStorage } from "../../utilities/ordersStorage";
 import { services } from "../../shared-constants/services";
+import { getServiceTypeLabel } from "../../utilities/getServiceTypeLabel";
 import "./OrdersList.scss";
 import { testId } from "../../utilities/testId";
 import ids from "./test-ids.json";
+import { MaintenanceOrder } from "../../types/maintenanceOrder";
 
 type SortDirection = "asc" | "desc";
 
 const OrdersList: React.FC = () => {
   const navigate = useNavigate();
+  const [orders, setOrders] = useState<MaintenanceOrder[]>([]);
   const [searchQueryCustomerName, setSearchQueryCustomerName] =
     useState<string>("");
   const [searchQueryPhoneNumber, setSearchQueryPhoneNumber] =
@@ -27,7 +31,7 @@ const OrdersList: React.FC = () => {
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
   const [selectedServiceType, setSelectedServiceType] = useState<string>("");
   const [dueDateFilter, setDueDateFilter] = useState<string>("");
-  const [filteredOrders, setFilteredOrders] = useState(mockedOrders);
+  const [filteredOrders, setFilteredOrders] = useState<MaintenanceOrder[]>([]);
   const {
     showModal,
     deleteId,
@@ -35,7 +39,11 @@ const OrdersList: React.FC = () => {
     handleSelect,
     confirmDelete,
     cancelDelete,
-  } = useDeleteConfirmationModal(); 
+  } = useDeleteConfirmationModal(setOrders);
+
+  const goToNewOrders = () => {
+    navigate("/orders/new");
+  };
 
   const handleRowClick = (id: string, event: React.MouseEvent) => {
     const target = event.target as HTMLElement;
@@ -87,7 +95,7 @@ const OrdersList: React.FC = () => {
     const queryEmail = searchQueryEmail.toLowerCase();
     const queryBrand = searchQueryBrand.toLowerCase();
 
-    const filtered = mockedOrders.filter((order) => {
+    const filtered = orders.filter((order) => {
       const matchesCustomerName = order.customerName
         .toLowerCase()
         .includes(queryCustomerName);
@@ -128,6 +136,7 @@ const OrdersList: React.FC = () => {
 
     setFilteredOrders(filtered);
   }, [
+    orders,
     searchQueryCustomerName,
     searchQueryPhoneNumber,
     searchQueryEmail,
@@ -158,8 +167,17 @@ const OrdersList: React.FC = () => {
     setSortDirection("asc");
     setSelectedServiceType("");
     setDueDateFilter("");
-    setFilteredOrders(mockedOrders);
+    setFilteredOrders(orders);
   };
+
+  useEffect(() => {
+    const ordersFromStorage = getOrdersFromStorage();
+    setOrders(ordersFromStorage);
+  }, []);
+
+  useEffect(() => {
+    setFilteredOrders(orders);
+  }, [orders]);
 
   return (
     <div className="page-wrap">
@@ -177,161 +195,183 @@ const OrdersList: React.FC = () => {
         <hr />
       </div>
 
-      <table className="table table-hover">
-        <thead>
-          <tr className="filters-heading">
-            <th onClick={() => handleSort("customerName")}>
-              Customer Name{" "}
-              {sortColumn === "customerName" &&
-                (sortDirection === "asc" ? "↑" : "↓")}
-            </th>
-            <th onClick={() => handleSort("phoneNumber")}>
-              Phone Number{" "}
-              {sortColumn === "phoneNumber" &&
-                (sortDirection === "asc" ? "↑" : "↓")}
-            </th>
-            <th onClick={() => handleSort("email")}>
-              Email{" "}
-              {sortColumn === "email" && (sortDirection === "asc" ? "↑" : "↓")}
-            </th>
-            <th onClick={() => handleSort("bikeBrand")}>
-              Bike Brand{" "}
-              {sortColumn === "bikeBrand" &&
-                (sortDirection === "asc" ? "↑" : "↓")}
-            </th>
-            <th onClick={() => handleSort("dueDate")}>
-              Due Date{" "}
-              {sortColumn === "dueDate" &&
-                (sortDirection === "asc" ? "↑" : "↓")}
-            </th>
-            <th onClick={() => handleSort("serviceType")}>
-              Service type{" "}
-              {sortColumn === "serviceType" &&
-                (sortDirection === "asc" ? "↑" : "↓")}
-            </th>
-            <th></th>
-          </tr>
-
-          <tr className="filters-container">
-            <th>
-              <InputField
-                type="text"
-                value={searchQueryCustomerName}
-                onChange={(e) => handleSearchChange("customerName", e)}
-                onClear={() => setSearchQueryCustomerName("")}
-                placeholder={"Filter by name"}
-                name={"searchCustomerName"}
-                classesName="input-field--white"
-                testId={ids.inputSearchCustomerName}
-              />
-            </th>
-            <th>
-              <InputField
-                type="tel"
-                value={searchQueryPhoneNumber}
-                onChange={(e) => handleSearchChange("phoneNumber", e)}
-                onClear={() => setSearchQueryPhoneNumber("")}
-                placeholder={"Filter by number"}
-                name={"searchPhoneNumber"}
-                classesName="input-field--white"
-                testId={ids.inputSearchPhoneNumber}
-              />
-            </th>
-            <th>
-              <InputField
-                type="email"
-                value={searchQueryEmail}
-                onChange={(e) => handleSearchChange("email", e)}
-                onClear={() => setSearchQueryEmail("")}
-                placeholder={"Filter by email"}
-                name={"searchEmail"}
-                classesName="input-field--white"
-                testId={ids.inputSearchEmail}
-              />
-            </th>
-            <th>
-              <InputField
-                type="text"
-                value={searchQueryBrand}
-                onChange={(e) => handleSearchChange("brand", e)}
-                onClear={() => setSearchQueryBrand("")}
-                placeholder={"Filter by brand"}
-                name={"searchEmail"}
-                classesName="input-field--white"
-                testId={ids.inputSearchBrand}
-              />
-            </th>
-            <th>
-              <InputField
-                type="date"
-                value={dueDateFilter}
-                onChange={handleDueDateFilterChange}
-                name="dueDate"
-                classesName="input-field--white pl-0"
-                testId={ids.inputDueDate}
-              />
-            </th>
-            <th>
-              <InputSelect
-                options={[
-                  { label: "All", value: "" },
-                  ...services.map((service) => ({
-                    label: service.label,
-                    value: service.value,
-                  })),
-                ]}
-                value={selectedServiceType}
-                onSelect={handleServiceTypeChange}
-                placeholder="Select service type"
-                classesName="select-input--white"
-                displayLabel={false}
-                testId={ids.selectServiceType}
-              />
-            </th>
-
-            <th>
-              <span
-                onClick={resetFilters}
-                className="reset-filter-icon"
-                {...testId(ids.resetFilter)}
-              >
-                <FaFilterCircleXmark />
-              </span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {sortedOrders.map((order) => (
-            <tr key={order.id} onClick={(e) => handleRowClick(order.id, e)}>
-              <td data-label="Customer Name">{order.customerName}</td>
-              <td data-label="Phone Number">{order.phoneNumber}</td>
-              <td data-label="Email">{order.email}</td>
-              <td data-label="Bike Brand">{order.bikeBrand}</td>
-              <td data-label="Due Date">{order.dueDate}</td>
-              <td data-label="Service type">{order.serviceType}</td>
-              <td>
-                <Dropdown
-                  type="table"
-                  options={[
-                    {
-                      label: "View order",
-                      action: `/orders/details/${order.id}`,
-                      icon: "FaEye",
-                    },
-                    {
-                      label: "Edit order",
-                      action: `/orders/details/${order.id}/edit`,
-                      icon: "FaEdit",
-                    },
-                    { label: "Delete order", icon: "FaTrashAlt", id: order.id },
-                  ]}
-                  onSelect={handleSelect}
-                />
-              </td>
+      {sortedOrders.length > 0 && (
+        <table className="table table-hover">
+          <thead>
+            <tr className="filters-heading">
+              <th onClick={() => handleSort("customerName")}>
+                Customer Name{" "}
+                {sortColumn === "customerName" &&
+                  (sortDirection === "asc" ? "↑" : "↓")}
+              </th>
+              <th onClick={() => handleSort("phoneNumber")}>
+                Phone Number{" "}
+                {sortColumn === "phoneNumber" &&
+                  (sortDirection === "asc" ? "↑" : "↓")}
+              </th>
+              <th onClick={() => handleSort("email")}>
+                Email{" "}
+                {sortColumn === "email" &&
+                  (sortDirection === "asc" ? "↑" : "↓")}
+              </th>
+              <th onClick={() => handleSort("bikeBrand")}>
+                Bike Brand{" "}
+                {sortColumn === "bikeBrand" &&
+                  (sortDirection === "asc" ? "↑" : "↓")}
+              </th>
+              <th onClick={() => handleSort("dueDate")}>
+                Due Date{" "}
+                {sortColumn === "dueDate" &&
+                  (sortDirection === "asc" ? "↑" : "↓")}
+              </th>
+              <th onClick={() => handleSort("serviceType")}>
+                Service type{" "}
+                {sortColumn === "serviceType" &&
+                  (sortDirection === "asc" ? "↑" : "↓")}
+              </th>
+              <th></th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+
+            <tr className="filters-container">
+              <th>
+                <InputField
+                  type="text"
+                  value={searchQueryCustomerName}
+                  onChange={(e) => handleSearchChange("customerName", e)}
+                  onClear={() => setSearchQueryCustomerName("")}
+                  placeholder={"Filter by name"}
+                  name={"searchCustomerName"}
+                  classesName="input-field--white"
+                  testId={ids.inputSearchCustomerName}
+                />
+              </th>
+              <th>
+                <InputField
+                  type="tel"
+                  value={searchQueryPhoneNumber}
+                  onChange={(e) => handleSearchChange("phoneNumber", e)}
+                  onClear={() => setSearchQueryPhoneNumber("")}
+                  placeholder={"Filter by number"}
+                  name={"searchPhoneNumber"}
+                  classesName="input-field--white"
+                  testId={ids.inputSearchPhoneNumber}
+                />
+              </th>
+              <th>
+                <InputField
+                  type="email"
+                  value={searchQueryEmail}
+                  onChange={(e) => handleSearchChange("email", e)}
+                  onClear={() => setSearchQueryEmail("")}
+                  placeholder={"Filter by email"}
+                  name={"searchEmail"}
+                  classesName="input-field--white"
+                  testId={ids.inputSearchEmail}
+                />
+              </th>
+              <th>
+                <InputField
+                  type="text"
+                  value={searchQueryBrand}
+                  onChange={(e) => handleSearchChange("brand", e)}
+                  onClear={() => setSearchQueryBrand("")}
+                  placeholder={"Filter by brand"}
+                  name={"searchEmail"}
+                  classesName="input-field--white"
+                  testId={ids.inputSearchBrand}
+                />
+              </th>
+              <th>
+                <InputField
+                  type="date"
+                  value={dueDateFilter}
+                  onChange={handleDueDateFilterChange}
+                  name="dueDate"
+                  classesName="input-field--white pl-0"
+                  testId={ids.inputDueDate}
+                />
+              </th>
+              <th>
+                <InputSelect
+                  options={[
+                    { label: "All", value: "" },
+                    ...services.map((service) => ({
+                      label: service.label,
+                      value: service.value,
+                    })),
+                  ]}
+                  value={selectedServiceType}
+                  onSelect={handleServiceTypeChange}
+                  placeholder="Select service type"
+                  classesName="select-input--white"
+                  displayLabel={false}
+                  testId={ids.selectServiceType}
+                />
+              </th>
+
+              <th>
+                <span
+                  onClick={resetFilters}
+                  className="reset-filter-icon"
+                  {...testId(ids.resetFilter)}
+                >
+                  <FaFilterCircleXmark />
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {sortedOrders.map((order) => (
+              <tr key={order.id} onClick={(e) => handleRowClick(order.id, e)}>
+                <td data-label="Customer Name">{order.customerName}</td>
+                <td data-label="Phone Number">{order.phoneNumber}</td>
+                <td data-label="Email">{order.email}</td>
+                <td data-label="Bike Brand">{order.bikeBrand}</td>
+                <td data-label="Due Date">{order.dueDate}</td>
+                <td data-label="Service type">
+                  {getServiceTypeLabel(order.serviceType)}
+                </td>
+                <td>
+                  <Dropdown
+                    type="table"
+                    options={[
+                      {
+                        label: "View order",
+                        action: `/orders/details/${order.id}`,
+                        icon: "FaEye",
+                      },
+                      {
+                        label: "Edit order",
+                        action: `/orders/details/${order.id}/edit`,
+                        icon: "FaEdit",
+                      },
+                      {
+                        label: "Delete order",
+                        icon: "FaTrashAlt",
+                        id: order.id,
+                      },
+                    ]}
+                    onSelect={handleSelect}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
+      {sortedOrders.length === 0 && (
+        <div className="empty-content-wrap">
+          <h2>No orders found</h2>
+          <p>
+            <Button
+              onClick={goToNewOrders}
+              label="Create new order"
+              testId={ids.buttonNoOrders}
+            />
+          </p>
+        </div>
+      )}
 
       {showModal && (
         <DeleteConfirmationModal
@@ -340,7 +380,7 @@ const OrdersList: React.FC = () => {
           orderId={deleteId}
         />
       )}
-      {showSuccessMessage && <ActionSuccessMsg action="Delete"  />}
+      {showSuccessMessage && <ActionSuccessMsg action="Delete" />}
     </div>
   );
 };

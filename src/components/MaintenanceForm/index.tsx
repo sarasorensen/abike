@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 import InputField from "../InputField";
 import Button from "../Button";
 import InputSelect from "../InputSelect/index";
@@ -50,17 +51,12 @@ const MaintenanceForm = ({
 
   useEffect(() => {
     if (orderData) {
-      const serviceTypeValue =
-        services.find((service) => service.label === orderData.serviceType)
-          ?.value || "";
-
       const formattedDueDate = new Date(orderData.dueDate)
         .toISOString()
         .split("T")[0];
 
       setFormData({
         ...orderData,
-        serviceType: serviceTypeValue,
         dueDate: formattedDueDate,
       });
     }
@@ -104,7 +100,7 @@ const MaintenanceForm = ({
       "serviceType",
       "dueDate",
     ];
-    
+
     const isValid = requiredFields.every(
       (field) => formData[field as keyof MaintenanceOrder]
     );
@@ -138,7 +134,13 @@ const MaintenanceForm = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    onSubmit(formData);
+
+    const newOrderData = {
+      ...formData,
+      id: orderData ? formData.id : uuidv4(),
+    };
+
+    onSubmit(newOrderData);
 
     setShowSuccessMessage(true);
 

@@ -7,7 +7,7 @@ import { BreadcrumbData } from "use-react-router-breadcrumbs";
 import "./header.scss";
 
 interface HeaderProps {
-  breadcrumbs: BreadcrumbData<string>[]; // Ensure breadcrumbs are of type BreadcrumbData<string>[]
+  breadcrumbs: BreadcrumbData<string>[]; 
 }
 
 const Header: React.FC<HeaderProps> = ({ breadcrumbs }) => {
@@ -27,14 +27,14 @@ const Header: React.FC<HeaderProps> = ({ breadcrumbs }) => {
             <>
               {breadcrumbs.map(({ breadcrumb, match }, index) => {
                 const isLast = index === breadcrumbs.length - 1;
-                const path = match.pathname; // Use pathname from match
+                const path = match.pathname; 
 
                 return (
                   <span key={path} className="header__breadcrumb-item">
                     {index > 0 && <span className="header__separator"> / </span>}
                     {!isLast ? (
                       <NavLink
-                        to={path} // Link to the path using match.pathname
+                        to={path}
                         className="header__link"
                         {...testId(ids.navLinkHeader)}
                       >

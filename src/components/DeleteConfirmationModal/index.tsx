@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Button from "../Button/index";
 import { FaTimes } from "react-icons/fa";
 import { MaintenanceOrder } from "../../types/maintenanceOrder";
-import { mockedOrders } from "../../shared-constants/mockedOrders";
+import { getOrdersFromStorage } from "../../utilities/ordersStorage";
 import ids from "./test-ids.json";
 import "./DeleteConfirmationModal.scss";
 
@@ -17,18 +17,19 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
   onCancel,
   orderId,
 }) => {
+  const [orders, setOrders] = useState<MaintenanceOrder[]>([]);
   const [orderDetails, setOrderDetails] = useState<MaintenanceOrder | null>(
     null
   );
 
   useEffect(() => {
     if (orderId) {
-      const order = mockedOrders.find((order) => order.id === orderId);
+      const order = orders.find((order) => order.id === orderId);
       if (order) {
         setOrderDetails(order);
       }
     }
-  }, [orderId]);
+  }, [orders, orderId]);
 
   const handleBackdropClick = (event: React.MouseEvent) => {
     if (event.target === event.currentTarget) {
@@ -39,6 +40,11 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
   const handleConfirm = () => {
     onConfirm();
   };
+
+  useEffect(() => {
+    const ordersFromStorage = getOrdersFromStorage();
+    setOrders(ordersFromStorage);
+  }, []);
 
   return (
     <div className="modal" onClick={handleBackdropClick}>

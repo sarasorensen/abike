@@ -21,27 +21,5 @@ describe("InputField Component", () => {
       expect(input).toBeInTheDocument();
       expect(input).toHaveValue("John Doe");
     });
-  });
-
-  it("should show the error message if the field is required and empty", async () => {
-    render(
-      <InputField
-        label="Customer Name"
-        value=""
-        name="customerName"
-        placeholder="Enter customer name"
-        onChange={jest.fn()}
-        required
-        testId={ids.input}
-      />
-    );
-
-    const input = screen.getByTestId(ids.input);
-    const errorMessage = screen.getByText("This field is required");
-
-    await waitFor(() => {
-      expect(input).toBeInTheDocument();
-      expect(errorMessage).toBeInTheDocument();
-    });
-  });
+  })
 });

@@ -14,7 +14,7 @@ describe("OrdersList", () => {
     render(<OrdersList />);
 
     const phoneNumberInput = screen.getByTestId('input_search_phone_number');
-    userEvent.change(phoneNumberInput, { target: { value: "12345" } });
+    userEvent.type(phoneNumberInput, "12345");
 
     await waitFor(() => {
       expect(phoneNumberInput.value).toBe("12345");
@@ -25,7 +25,7 @@ describe("OrdersList", () => {
     render(<OrdersList />);
 
     const emailInput = screen.getByTestId('input_search_email');
-    userEvent.change(emailInput, { target: { value: "john@example.com" } });
+    userEvent.type(emailInput, "john@example.com");
 
     await waitFor(() => {
       expect(emailInput.value).toBe("john@example.com");
@@ -36,7 +36,7 @@ describe("OrdersList", () => {
     render(<OrdersList />);
 
     const brandInput = screen.getByTestId('input_search_brand');
-    userEvent.change(brandInput, { target: { value: "Trek" } });
+    userEvent.type(brandInput,"Trek");
 
     await waitFor(() => {
       expect(brandInput.value).toBe("Trek");
@@ -67,19 +67,21 @@ describe("OrdersList", () => {
 
   it("should filter orders by due date", async () => {
     render(<OrdersList />);
-
+  
     const dueDateInput = screen.getByTestId('input_due_date');
-    userEvent.change(dueDateInput, { target: { value: "2024-12-25" } });
-
+  
+    userEvent.type(dueDateInput, "2024-12-25");
+  
     await waitFor(() => {
       expect(dueDateInput.value).toBe("2024-12-25");
     });
   });
+  
 
   it("should reset filters when reset button is clicked", async () => {
     render(<OrdersList />);
 
-    userEvent.change(screen.getByTestId('input_search_phone_number'), { target: { value: "12345" } });
+    userEvent.type(screen.getByTestId('input_search_phone_number'), "12345");
 
     userEvent.click(screen.getByTestId('reset_filter'));
 
