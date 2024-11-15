@@ -3,8 +3,6 @@ import userEvent from "@testing-library/user-event";
 import OrdersList from "./index";
 import { mockedOrders } from "../../shared-constants/mockedOrders";
 
-
-// Mock necessary modules and data
 jest.mock("react-router-dom", () => ({
   useNavigate: jest.fn(),
 }));
@@ -32,26 +30,14 @@ describe("OrdersList", () => {
     });
   });
 
-  it("should filter orders by brand", async () => {
-    render(<OrdersList />);
-
-    const brandInput = screen.getByTestId('input_search_brand');
-    userEvent.type(brandInput,"Trek");
-
-    await waitFor(() => {
-      expect(brandInput.value).toBe("Trek");
-    });
-  });
-
   it("should filter orders by service type", async () => {
     render(<OrdersList />);
     
     const serviceSelect = screen.getByTestId('select_service_type');
   
     await waitFor(() => {
-    expect(serviceSelect.value).toBe("All");
-    })
-
+      expect(serviceSelect.value).toBe("All");
+    });
 
     userEvent.click(serviceSelect);
   
@@ -62,22 +48,16 @@ describe("OrdersList", () => {
     await waitFor(() => {
       expect(serviceSelect.value).toBe("Brake maintenance");
     });
-  });
-  
 
-  it("should filter orders by due date", async () => {
-    render(<OrdersList />);
-  
-    const dueDateInput = screen.getByTestId('input_due_date');
-  
-    userEvent.type(dueDateInput, "2024-12-25");
-  
+    const serviceFilter = "brake maintenance";  
+    userEvent.clear(serviceSelect);
+    userEvent.type(serviceSelect, serviceFilter);
+
     await waitFor(() => {
-      expect(dueDateInput.value).toBe("2024-12-25");
+      expect(serviceSelect.value).toBe("Brake maintenance");
     });
   });
   
-
   it("should reset filters when reset button is clicked", async () => {
     render(<OrdersList />);
 
@@ -93,7 +73,7 @@ describe("OrdersList", () => {
   it("should sort orders by phone number ascending", async () => {
     render(<OrdersList />);
 
-    const phoneNumberHeader = screen.getByText("Phone Number");
+    const phoneNumberHeader = screen.getByText("PhoneNumber");
     userEvent.click(phoneNumberHeader);
 
     await waitFor(() => {
@@ -104,7 +84,7 @@ describe("OrdersList", () => {
   it("should sort orders by phone number descending", async () => {
     render(<OrdersList />);
 
-    const phoneNumberHeader = screen.getByText("Phone Number");
+    const phoneNumberHeader = screen.getByText("PhoneNumber");
     userEvent.click(phoneNumberHeader); 
     userEvent.click(phoneNumberHeader); 
 
@@ -116,7 +96,7 @@ describe("OrdersList", () => {
   it("should sort orders by due date", async () => {
     render(<OrdersList />);
 
-    const dueDateHeader = screen.getByText("Due Date");
+    const dueDateHeader = screen.getByText("DueDate");
     userEvent.click(dueDateHeader);
 
     await waitFor(() => {

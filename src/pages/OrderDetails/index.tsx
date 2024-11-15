@@ -8,8 +8,10 @@ import Button from "../../components/Button/index";
 import DeleteConfirmationModal from "../../components/DeleteConfirmationModal/index";
 import ActionSuccessMsg from "../../components/ActionSuccessMsg/index";
 import Dropdown from "../../components/Dropdown/index";
+import NoContentFound from "../../components/NoContentFound/index";
 import { MaintenanceOrder } from "../../types/maintenanceOrder";
-import { getOrdersFromStorage } from '../../utilities/ordersStorage';
+import { getOrdersFromStorage } from "../../utilities/ordersStorage";
+import { getServiceTypeLabel } from "../../utilities/getServiceTypeLabel";
 import "./OrderDetails.scss";
 import ids from "./test-ids.json";
 
@@ -45,84 +47,88 @@ const OrderDetails: React.FC = () => {
 
   return (
     <div className="page-wrap w-50">
-      <div className="header-container">
-        <h1>Order Details</h1>
-        <Dropdown
-          options={[
-            {
-              label: "Edit Order",
-              action: `/orders/details/${id}/edit`,
-              icon: "FaEdit",
-            },
-            { label: "Delete order", icon: "FaTrashAlt", id: id },
-          ]}
-          onSelect={handleSelect}
-        />
-        <hr />
-      </div>
-
-      <div className="form-card">
-        <div className="card-header">
-          <RxAvatar className="card-header--icon" />
-          <h5>Personal Information</h5>
-        </div>
-        <div className="card-body">
-          <div className="row">
-            <div className="col-sm-6">
-              <label>Customer Name:</label> {orderDetails?.customerName}
-            </div>
-            <div className="col-sm-6">
-              <label>Phone Number:</label> {orderDetails?.phoneNumber}
-            </div>
-            <div className="col-sm-6">
-              <label>Email:</label> {orderDetails?.email}
-            </div>
-            <div className="col-sm-6">
-              <label>Order ID:</label> {orderDetails?.id}
-            </div>
+      {orderDetails !== null && (
+        <>
+          <div className="header-container">
+            <h1>Order Details</h1>
+            <Dropdown
+              options={[
+                {
+                  label: "Edit Order",
+                  action: `/orders/details/${id}/edit`,
+                  icon: "FaEdit",
+                },
+                { label: "Delete order", icon: "FaTrashAlt", id: id },
+              ]}
+              onSelect={handleSelect}
+            />
+            <hr />
           </div>
-        </div>
 
-        <div className="card-header">
-          <FaBicycle className="card-header--icon" />
-          <h5>Bike Information</h5>
-        </div>
-        <div className="card-body">
-          <div className="row">
-            <div className="col-sm-6">
-              <label>Bike Brand:</label> {orderDetails?.bikeBrand}
-            </div>
-            <div className="col-sm-6">
-              <label>Service Type:</label> {orderDetails?.serviceType}
-            </div>
-            <div className="col-sm-12">
-              <label>Due Date:</label> {orderDetails?.dueDate}
-            </div>
-          </div>
-        </div>
-
-        {orderDetails?.notes && (
-          <>
+          <div className="form-card">
             <div className="card-header">
-              <MdOutlineNoteAlt className="card-header--icon" />
-              <h5>Additional Notes</h5>
+              <RxAvatar className="card-header--icon" />
+              <h5>Personal Information</h5>
             </div>
             <div className="card-body">
               <div className="row">
-                <div className="col-sm-12">{orderDetails?.notes}</div>
+                <div className="col-sm-6">
+                  <label>Customer Name:</label> {orderDetails?.customerName}
+                </div>
+                <div className="col-sm-6">
+                  <label>Phone Number:</label> {orderDetails?.phoneNumber}
+                </div>
+                <div className="col-sm-6">
+                  <label>Email:</label> {orderDetails?.email}
+                </div>
               </div>
             </div>
-          </>
-        )}
-      </div>
 
-      <div className="d-flex justify-content-end gap-3 mb-4 mt-2">
-        <Button
-          onClick={() => navigate("/orders")}
-          label="Back to Orders"
-          testId={ids.buttonGoBack}
-        />
-      </div>
+            <div className="card-header">
+              <FaBicycle className="card-header--icon" />
+              <h5>Bike Information</h5>
+            </div>
+            <div className="card-body">
+              <div className="row">
+                <div className="col-sm-6">
+                  <label>Bike Brand:</label> {orderDetails?.bikeBrand}
+                </div>
+                <div className="col-sm-6">
+                  <label>Service Type:</label>{" "}
+                  {getServiceTypeLabel(orderDetails.serviceType)}
+                </div>
+                <div className="col-sm-12">
+                  <label>Due Date:</label> {orderDetails?.dueDate}
+                </div>
+              </div>
+            </div>
+
+            {orderDetails?.notes && (
+              <>
+                <div className="card-header">
+                  <MdOutlineNoteAlt className="card-header--icon" />
+                  <h5>Additional Notes</h5>
+                </div>
+                <div className="card-body">
+                  <div className="row">
+                    <div className="col-sm-12">{orderDetails?.notes}</div>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className="d-flex justify-content-end gap-3 mb-4 mt-2">
+            <Button
+              onClick={() => navigate("/orders")}
+              label="Back to Orders"
+              testId={ids.buttonGoBack}
+            />
+          </div>
+        </>
+      )}
+
+      {orderDetails === null && <NoContentFound />}
 
       {showModal && (
         <DeleteConfirmationModal

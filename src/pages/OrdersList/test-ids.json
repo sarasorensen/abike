@@ -1,7 +1,7 @@
 {
     "inputSearch": "input_search",
     "selectServiceType": "select_service_type",
-    "inputSearchCustomerName": "input_search_sustomer_name",
+    "inputSearchCustomerName": "input_search_customer_name",
     "inputSearchPhoneNumber": "input_search_phone_number",
     "inputSearchEmail": "input_search_email",
     "inputSearchBrand": "input_search_brand",

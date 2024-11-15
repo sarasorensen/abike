@@ -13,8 +13,6 @@ interface SelectComponentProps {
   placeholder?: string;
   required?: boolean;
   testId: string;
-  showError?: boolean;
-  errorMessage?: string;
   classesName?: string;
   displayLabel?: boolean;
   loading?: boolean
@@ -27,13 +25,10 @@ const InputSelect: React.FC<SelectComponentProps> = ({
   placeholder = "Select an option",
   required = false,
   testId,
-  showError = false,
-  errorMessage = "This field is required",
   classesName,
   displayLabel = true,
   loading
 }) => {
-  const isError = showError && !value;
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
 
@@ -91,11 +86,6 @@ const InputSelect: React.FC<SelectComponentProps> = ({
             </li>
           ))}
         </ul>
-      )}
-      {isError && (
-        <span id={`${testId}-error`} className="error-message" role="alert">
-          {errorMessage}
-        </span>
       )}
     </div>
   );

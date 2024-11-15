@@ -116,8 +116,7 @@ const MaintenanceForm = ({
     // eslint-disable-next-line
   }, [formData]);
 
-  const cancelSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const resetFormData = () => {
     setFormData({
       id: "",
       customerName: "",
@@ -128,6 +127,11 @@ const MaintenanceForm = ({
       dueDate: "",
       notes: "",
     });
+  };
+
+  const cancelSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    resetFormData();
     navigate("/");
   };
 
@@ -141,6 +145,7 @@ const MaintenanceForm = ({
     };
 
     onSubmit(newOrderData);
+    resetFormData();
 
     setShowSuccessMessage(true);
 
@@ -266,8 +271,6 @@ const MaintenanceForm = ({
                   handleChange({ target: { name: "serviceType", value } })
                 }
                 required
-                errorMessage="Service type cannot be empty"
-                showError={touched.serviceType && !formData.serviceType}
                 placeholder="Select service type"
                 testId={ids.selectServiceType}
               />

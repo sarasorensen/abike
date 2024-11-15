@@ -45,7 +45,6 @@ describe("OrderDetails", () => {
       expect(screen.getByText(`${order.bikeBrand}`)).toBeInTheDocument();
       expect(screen.getByText(`${order.serviceType}`)).toBeInTheDocument();
       expect(screen.getByText(`${order.dueDate}`)).toBeInTheDocument();
-      expect(screen.getByText(`${order.id}`)).toBeInTheDocument();
     });
   });
 
