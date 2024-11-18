@@ -25,9 +25,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint-staged": "lint-staged",
-    "prepare": "husky install"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -54,7 +52,7 @@
     "@testing-library/react": "^16.0.1",
     "@types/axios": "^0.14.4",
     "@types/jest": "^29.5.14",
-    "husky": "^8.0.0",
+    "husky": "^9.1.7",
     "jest": "^27.5.1",
     "json-server": "^1.0.0-beta.3",
     "lint-staged": "^15.2.10",
