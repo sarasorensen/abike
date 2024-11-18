@@ -24,8 +24,15 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "cross-env CI=true react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "lint": "eslint src"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm test",
+      "pre-push": "npm run lint && npm test"
+    }
   },
   "eslintConfig": {
     "extends": [
@@ -52,6 +59,7 @@
     "@testing-library/react": "^16.0.1",
     "@types/axios": "^0.14.4",
     "@types/jest": "^29.5.14",
+    "cross-env": "^7.0.3",
     "husky": "^9.1.7",
     "jest": "^27.5.1",
     "json-server": "^1.0.0-beta.3",
