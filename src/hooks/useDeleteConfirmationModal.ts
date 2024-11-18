@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { deleteOrder, getOrdersFromStorage } from "../utilities/ordersStorage";
 import { MaintenanceOrder } from "../types/maintenanceOrder";
 
 export const useDeleteConfirmationModal = (setOrders?: React.Dispatch<React.SetStateAction<MaintenanceOrder[]>>) => {
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -27,6 +29,7 @@ export const useDeleteConfirmationModal = (setOrders?: React.Dispatch<React.SetS
 
       setTimeout(() => {
         setShowSuccessMessage(false);
+        navigate("/");
       }, 2500);
     }
   };

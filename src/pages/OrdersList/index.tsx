@@ -26,7 +26,7 @@ const OrdersList: React.FC = () => {
     customerName: "",
     phoneNumber: "",
     email: "",
-    brand: "",
+    bikeBrand: "",
     serviceType: "",
     dueDate: "",
   });
@@ -87,35 +87,27 @@ const OrdersList: React.FC = () => {
   };
 
   const filterOrders = () => {
-    const query = Object.keys(filters).reduce(
-      (acc: Record<string, string>, key: string) => {
-        const filterValue = filters[key as keyof typeof filters];
-        acc[key] = filterValue.toLowerCase();
-        return acc;
-      },
-      {} as Record<string, string>
-    );
-
     return orders.filter((order) => {
-      const matches = Object.keys(query).every((key) => {
-        if (!query[key]) return true;
-
-        if (key === "dueDate") {
-          return order.dueDate === query[key];
-        }
-
-        return order[key as keyof MaintenanceOrder]
-          .toLowerCase()
-          .includes(query[key]);
+      const matchesFilters = Object.entries(filters).every(([key, value]) => {
+        if (!value) return true; // Skip empty filters
+        
+  
+        const field = order[key as keyof MaintenanceOrder]; // Access field directly
+        if (!field || typeof field !== "string") return false; // Ensure field exists and is a string
+  
+        return field.toLowerCase().includes(value.toLowerCase()); // Perform case-insensitive comparison
       });
-
+  
       const matchesServiceType =
-        !filters.serviceType ||
-        filters.serviceType.toLowerCase() === order.serviceType.toLowerCase();
-
-      return matches && matchesServiceType;
+        !filters.serviceType || // Skip if serviceType filter is not set
+        (order.serviceType &&
+          order.serviceType.toLowerCase() === filters.serviceType.toLowerCase());
+  
+      return matchesFilters && matchesServiceType;
     });
   };
+  
+  
 
   useEffect(() => {
     setFilteredOrders(filterOrders());
@@ -127,7 +119,7 @@ const OrdersList: React.FC = () => {
       customerName: "",
       phoneNumber: "",
       email: "",
-      brand: "",
+      bikeBrand: "",
       serviceType: "",
       dueDate: "",
     });
@@ -157,12 +149,12 @@ const OrdersList: React.FC = () => {
           <thead>
             <tr className="filters-heading">
               {[
-                "customerName",
-                "phoneNumber",
+                "customer Name",
+                "phone Number",
                 "email",
-                "bikeBrand",
-                "dueDate",
-                "serviceType",
+                "bike Brand",
+                "due Date",
+                "service Type",
               ].map((column) => (
                 <th key={column} onClick={() => handleSort(column)}>
                   {column.charAt(0).toUpperCase() + column.slice(1)}{" "}
@@ -174,7 +166,7 @@ const OrdersList: React.FC = () => {
             </tr>
 
             <tr className="filters-container">
-              {["customerName", "phoneNumber", "email", "brand", "dueDate"].map(
+              {["customerName", "phoneNumber", "email", "bikeBrand", "dueDate"].map(
                 (field) => (
                   <th key={field}>
                     <InputField

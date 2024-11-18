@@ -12,11 +12,10 @@ body {
 
 main {
   display: flex;
+  align-content: center;
   justify-content: center;
-  max-width: 90%;
   min-height: 100vh;
-  margin: 0 auto;
-  padding: vars.$spacing-medium vars.$spacing-medium;
+  padding: vars.$spacing-xxlarge vars.$spacing-xxlarge;
 }
 
 .page-wrap {

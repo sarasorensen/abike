@@ -177,6 +177,7 @@ const MaintenanceForm = ({
                 testId={ids.inputCustomerName}
                 errorMessage="Customer name cannot be empty"
                 showError={
+                  !loading &&
                   touched.customerName &&
                   (!formData.customerName ||
                     !validateInput(formData.customerName))
@@ -195,6 +196,7 @@ const MaintenanceForm = ({
                 testId={ids.inputPhoneNumber}
                 errorMessage="Phone number cannot be empty or invalid"
                 showError={
+                  !loading &&
                   touched.phoneNumber &&
                   (!formData.phoneNumber ||
                     !validatePhoneNumber(formData.phoneNumber) ||
@@ -214,6 +216,7 @@ const MaintenanceForm = ({
                 testId={ids.inputEmail}
                 errorMessage="Email cannot be empty or invalid"
                 showError={
+                  !loading &&
                   touched.email &&
                   (!formData.email ||
                     !validateEmail(formData.email) ||
@@ -243,6 +246,7 @@ const MaintenanceForm = ({
                 testId={ids.inputBikeBrand}
                 errorMessage="Bike brand cannot be empty"
                 showError={
+                  !loading &&
                   touched.bikeBrand &&
                   (!formData.bikeBrand || !validateInput(formData.bikeBrand))
                 }
@@ -259,7 +263,9 @@ const MaintenanceForm = ({
                 onChange={handleChange}
                 testId={ids.inputDueDate}
                 errorMessage="Due date cannot be empty"
-                showError={touched.notes && !validateInput(formData.notes)}
+                showError={
+                  !loading && touched.notes && !validateInput(formData.notes)
+                }
               />
             </div>
             <div className="col-sm-12">
