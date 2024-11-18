@@ -16,7 +16,7 @@ const routes = [
 ];
 
 const App: React.FC = () => {
-  const breadcrumbs = useBreadcrumbs(routes, { excludePaths: ["/orders/details"] });
+  const breadcrumbs = useBreadcrumbs(routes, { excludePaths: ["/orders/details", "/"] });
 
   return (
     <>

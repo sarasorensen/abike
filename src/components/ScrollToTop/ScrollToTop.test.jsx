@@ -1,12 +1,11 @@
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import ScrollToTop from "./index";
 
-// Mock the window.scrollTo function
 global.scrollTo = jest.fn();
 
 describe("ScrollToTop Component", () => {
-  it("should scroll to top on route change", () => {
+  it("should scroll to top on route change", async() => {
     render(
       <MemoryRouter
         initialEntries={["/"]}
@@ -16,10 +15,10 @@ describe("ScrollToTop Component", () => {
       </MemoryRouter>
     );
 
-    // Simulate route change
     window.history.pushState({}, "", "/new-route");
 
-    // Assert that window.scrollTo(0, 0) has been called
+    await waitFor(() =>{
     expect(global.scrollTo).toHaveBeenCalledWith(0, 0);
+    })
   });
 });

@@ -27,7 +27,7 @@ describe("MaintenanceForm", () => {
       expect(screen.getByTestId("input_email")).toBeInTheDocument();
       expect(screen.getByTestId("input_bike_brand")).toBeInTheDocument();
       expect(screen.getByTestId("select_service_type")).toBeInTheDocument();
-      expect(screen.getByTestId("inputDueDate")).toBeInTheDocument();
+      expect(screen.getByTestId("input_due_date")).toBeInTheDocument();
       expect(screen.getByTestId("text_area_notes")).toBeInTheDocument();
     });
   });
@@ -47,7 +47,7 @@ describe("MaintenanceForm", () => {
     const emailInput = screen.getByTestId("input_email");
     const bikeBrandInput = screen.getByTestId("input_bike_brand");
     const serviceTypeInput = screen.getByTestId("select_service_type");
-    const dueDateInput = screen.getByTestId("inputDueDate");
+    const dueDateInput = screen.getByTestId("input_due_date");
     const notesInput = screen.getByTestId("text_area_notes");
 
     await waitFor(() => {

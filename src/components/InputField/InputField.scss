@@ -17,9 +17,8 @@
   .input-icon {
     position: absolute;
     left: auto;
-    margin-top: 1.2em;
+    margin-top: 0.7em;
     margin-left: vars.$spacing-medium;
-    font-size: 16px;
     color: vars.$placeholder-color;
     pointer-events: none;
   }
@@ -40,7 +39,7 @@
 
     &:focus {
       border-color: vars.$placeholder-color;
-      box-shadow: 0 2px 4px vars.$placeholder-secondary-color;
+      box-shadow: vars.$box-shadow;
     }
 
     &:disabled {

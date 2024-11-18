@@ -1,6 +1,6 @@
 export const mockedOrders = [
   {
-    id: "1",
+    id: "4c1f-b98e-e03a75f1b5f4",
     customerName: "John Doe",
     phoneNumber: "1234567890",
     email: "john@example.com",
@@ -10,7 +10,7 @@ export const mockedOrders = [
     notes: "Check the brakes as well",
   },
   {
-    id: "2",
+    id: "b0e96b2-7536",
     customerName: "Jane Smith",
     phoneNumber: "9876543210",
     email: "jane@example.com",
@@ -20,7 +20,7 @@ export const mockedOrders = [
     notes: "Replace the rear chain",
   },
   {
-    id: "3",
+    id: "3a75f1b5f4",
     customerName: "Maria Hansen",
     phoneNumber: "9846523220",
     email: "maria@example.com",

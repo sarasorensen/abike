@@ -21,7 +21,6 @@ main {
 .page-wrap {
   display: flex;
   flex-direction: column;
-  gap: vars.$spacing-large;
   width: 100%;
   margin-bottom: vars.$spacing-medium;
   @media (max-width: 768px) {

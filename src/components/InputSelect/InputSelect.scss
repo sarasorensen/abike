@@ -39,7 +39,7 @@
     &:focus,
     &:hover {
       border-color: vars.$placeholder-color;
-      box-shadow: 0 2px 4px vars.$placeholder-secondary-color;
+      box-shadow: vars.$box-shadow;
     }
     
   }
@@ -70,7 +70,7 @@
     &:focus,
     &:hover {
       border-color: vars.$placeholder-color;
-      box-shadow: 0 2px 4px vars.$placeholder-secondary-color;
+      box-shadow: vars.$box-shadow;
     }
 
     @media (max-width: 768px) {
@@ -89,7 +89,7 @@
     background-color: #fff;
     color: vars.$tertiary-color;
     overflow-y: auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: vars.$box-shadow;
     z-index: 1000;
 
     .select-option {

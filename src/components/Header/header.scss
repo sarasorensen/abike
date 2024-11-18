@@ -22,7 +22,7 @@
   &__breadcrumbs {
     display: flex;
     align-items: center;
-    font-size:vars.$font-size-input;
+    font-size: vars.$font-size-input;
     margin-top: vars.$spacing-small;
   }
 
@@ -34,14 +34,12 @@
   &__link {
     color: vars.$tertiary-color;
     text-decoration: none;
-    opacity: 0.8;
     cursor: pointer;
     font-size: vars.$font-size-label;
     font-weight: 600;
-    color: vars.$placeholder-color;
     transition: color 0.2s ease;
     &:hover {
-     opacity: 1;
+      color: vars.$primary-color;
     }
   }
 }

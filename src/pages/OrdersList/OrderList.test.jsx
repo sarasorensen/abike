@@ -73,7 +73,7 @@ describe("OrdersList", () => {
   it("should sort orders by phone number ascending", async () => {
     render(<OrdersList />);
 
-    const phoneNumberHeader = screen.getByText("PhoneNumber");
+    const phoneNumberHeader = screen.getByText("Phone Number");
     userEvent.click(phoneNumberHeader);
 
     await waitFor(() => {
@@ -84,7 +84,7 @@ describe("OrdersList", () => {
   it("should sort orders by phone number descending", async () => {
     render(<OrdersList />);
 
-    const phoneNumberHeader = screen.getByText("PhoneNumber");
+    const phoneNumberHeader = screen.getByText("Phone Number");
     userEvent.click(phoneNumberHeader); 
     userEvent.click(phoneNumberHeader); 
 
@@ -96,7 +96,7 @@ describe("OrdersList", () => {
   it("should sort orders by due date", async () => {
     render(<OrdersList />);
 
-    const dueDateHeader = screen.getByText("DueDate");
+    const dueDateHeader = screen.getByText("Due Date");
     userEvent.click(dueDateHeader);
 
     await waitFor(() => {

@@ -13,7 +13,7 @@ button {
   transition: background-color 0.3s ease;
   display: block;
   &:hover {
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: vars.$box-shadow;
   }
   &:disabled {
     background-color: vars.$disabled-bg-color;
@@ -25,4 +25,12 @@ button {
 .button-cancel{
   background-color: vars.$border-color;
   color: vars.$tertiary-color;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem; 
+  margin-bottom: 1rem; 
+  margin-top: 1rem; 
 }

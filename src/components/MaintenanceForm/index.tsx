@@ -302,7 +302,7 @@ const MaintenanceForm = ({
         </div>
       </div>
 
-      <div className="d-flex justify-content-end gap-3 mb-4">
+      <div className="button-wrapper">
         <Button
           onClick={cancelSubmit}
           label="Cancel"

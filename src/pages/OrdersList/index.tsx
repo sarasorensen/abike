@@ -90,24 +90,22 @@ const OrdersList: React.FC = () => {
     return orders.filter((order) => {
       const matchesFilters = Object.entries(filters).every(([key, value]) => {
         if (!value) return true; // Skip empty filters
-        
-  
+
         const field = order[key as keyof MaintenanceOrder]; // Access field directly
         if (!field || typeof field !== "string") return false; // Ensure field exists and is a string
-  
+
         return field.toLowerCase().includes(value.toLowerCase()); // Perform case-insensitive comparison
       });
-  
+
       const matchesServiceType =
         !filters.serviceType || // Skip if serviceType filter is not set
         (order.serviceType &&
-          order.serviceType.toLowerCase() === filters.serviceType.toLowerCase());
-  
+          order.serviceType.toLowerCase() ===
+            filters.serviceType.toLowerCase());
+
       return matchesFilters && matchesServiceType;
     });
   };
-  
-  
 
   useEffect(() => {
     setFilteredOrders(filterOrders());
@@ -166,32 +164,38 @@ const OrdersList: React.FC = () => {
             </tr>
 
             <tr className="filters-container">
-              {["customerName", "phoneNumber", "email", "bikeBrand", "dueDate"].map(
-                (field) => (
-                  <th key={field}>
-                    <InputField
-                      type={field === "dueDate" ? "date" : "text"}
-                      value={filters[field as keyof typeof filters]}
-                      onChange={(e) => handleFilterChange(e, field)}
-                      onClear={() =>
-                        handleSearchChange(field as keyof typeof filters, "")
-                      }
-                      placeholder={`Filter by ${field}`}
-                      name={`search${
-                        field.charAt(0).toUpperCase() + field.slice(1)
-                      }`}
-                      classesName="input-field--white"
-                      testId={
-                        ids[
-                          `inputSearch${
-                            field.charAt(0).toUpperCase() + field.slice(1)
-                          }` as keyof typeof ids
-                        ]
-                      }
-                    />
-                  </th>
-                )
-              )}
+              {[
+                "customerName",
+                "phoneNumber",
+                "email",
+                "bikeBrand",
+                "dueDate",
+              ].map((field) => (
+                <th key={field}>
+                  <InputField
+                    type={field === "dueDate" ? "date" : "text"}
+                    value={filters[field as keyof typeof filters]}
+                    onChange={(e) => handleFilterChange(e, field)}
+                    onClear={() =>
+                      handleSearchChange(field as keyof typeof filters, "")
+                    }
+                    placeholder={`Filter by ${field
+                      .replace(/([a-z])([A-Z])/g, "$1 $2")
+                      .replace(/^./, (str) => str.toUpperCase())}`}
+                    name={`search${
+                      field.charAt(0).toUpperCase() + field.slice(1)
+                    }`}
+                    classesName="input-field--white"
+                    testId={
+                      ids[
+                        `inputSearch${
+                          field.charAt(0).toUpperCase() + field.slice(1)
+                        }` as keyof typeof ids
+                      ]
+                    }
+                  />
+                </th>
+              ))}
               <th>
                 <InputSelect
                   options={[

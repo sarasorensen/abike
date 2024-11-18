@@ -1,7 +1,6 @@
 @use "../../styles/variables" as vars;
 
 table {
-  width: 100%;
   box-sizing: border-box;
   border-collapse: separate;
   border-spacing: 0 10px;
@@ -32,7 +31,7 @@ table {
   tr {
     background-color: #fff;
     margin-bottom: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: vars.$box-shadow;
   }
 
   a {
@@ -44,7 +43,7 @@ table {
     }
   }
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1250px) {
     display: block;
     width: 100%;
 

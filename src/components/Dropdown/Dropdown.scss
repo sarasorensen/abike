@@ -15,7 +15,7 @@
   padding: vars.$spacing-medium;
   background-color: #fff;
   color: vars.$tertiary-color;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: vars.$box-shadow;
   width: 200px;
   z-index: 1000;
   display: block;

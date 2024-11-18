@@ -118,7 +118,7 @@ const OrderDetails: React.FC = () => {
             )}
           </div>
 
-          <div className="d-flex justify-content-end gap-3 mb-4 mt-2">
+          <div className="button-wrapper">
             <Button
               onClick={() => navigate("/orders")}
               label="Back to Orders"

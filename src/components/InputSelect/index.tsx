@@ -71,6 +71,7 @@ const InputSelect: React.FC<SelectComponentProps> = ({
         value={selectedLabel || ""}
         readOnly
         onClick={toggleSelect}
+        id={testId} 
       />
 
       {isOpen && (

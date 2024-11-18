@@ -4,7 +4,7 @@
     "inputEmail": "input_email",
     "inputBikeBrand": "input_bike_brand",
     "selectServiceType": "select_service_type",
-    "inputDueDate": "inputDueDate",
+    "inputDueDate": "input_due_date",
     "textAreaNotes": "text_area_notes",
     "buttonCancelMaintenance": "button_cancel_maintenance",
     "buttonSubmitMaintenance": "button_submit_maintenance"

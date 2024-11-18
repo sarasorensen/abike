@@ -3,7 +3,6 @@ import { MemoryRouter } from "react-router-dom";
 import Header from "./index";
 import ids from "./test-ids.json";
 
-// Mock breadcrumbs data to pass to the Header component
 const mockBreadcrumbs = [
     { breadcrumb: "Home", match: { pathname: "/home" } },
     { breadcrumb: "Orders", match: { pathname: "/orders" } },

@@ -22,7 +22,7 @@
   width: 600px;
   max-width: 100%;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: vars.$box-shadow;
 }
 
 .modal-content h3 {
@@ -59,7 +59,7 @@
     padding: vars.$spacing-large;
     border-radius: vars.$border-radius;
     font-size: vars.$font-size-input;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: vars.$box-shadow;
     & p{
         margin: 0;
     }

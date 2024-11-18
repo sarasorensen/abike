@@ -6,6 +6,5 @@
     "inputSearchEmail": "input_search_email",
     "inputSearchBrand": "input_search_brand",
     "inputDueDate": "input_due_date",
-    "resetFilter": "reset_filter",
-    "buttonNoOrders": "button_no_orders"
+    "resetFilter": "reset_filter"
 }

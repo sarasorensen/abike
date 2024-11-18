@@ -43,9 +43,11 @@ const InputField: React.FC<InputFieldProps> = ({
 
   return (
     <div className={`input-field ${classesName}`}>
-      <label htmlFor={testId} className="input-field-label">
-        {label} {required && <span>*</span>}
-      </label>
+      {label && (
+        <label htmlFor={testId} className="input-field-label">
+          {label} {required && <span>*</span>}
+        </label>
+      )}
       {type === "textarea" ? (
         <textarea
           className={loading ? "loading-input" : ""}
