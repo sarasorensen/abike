@@ -1,9 +1,16 @@
-version: "3"
+version: "3.8"
+
 services:
-  app:
-    build: .
+  frontend:
+    build:
+      context: . # Path to the current directory (the root of your React project)
+    container_name: react-frontend
     ports:
-      - "3000:3000"
-    volumes:
-      - .:/app
-    command: npm start
+      - "80:80" # Expose port 80 of the container to port 80 on your host machine
+    networks:
+      - app-network
+
+# Define a network for the container
+networks:
+  app-network:
+    driver: bridge

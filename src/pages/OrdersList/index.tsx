@@ -92,12 +92,7 @@ const OrdersList: React.FC = () => {
         return field.toLowerCase().includes(value.toLowerCase());
       });
 
-      return (
-        matchesFilters &&
-        (!filters.serviceType ||
-          order.serviceType?.toLowerCase() ===
-            filters.serviceType.toLowerCase())
-      );
+      return matchesFilters;
     });
   }, [orders, filters]);
 
@@ -150,7 +145,7 @@ const OrdersList: React.FC = () => {
             handleSearchChange={handleSearchChange}
             resetFilters={resetFilters}
             handleSort={handleSort}
-            sortConfig={sortConfig} 
+            sortConfig={sortConfig}
             fields={[
               "customerName",
               "phoneNumber",
