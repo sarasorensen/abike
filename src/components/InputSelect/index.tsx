@@ -15,19 +15,19 @@ interface SelectComponentProps {
   testId: string;
   classesName?: string;
   displayLabel?: boolean;
-  loading?: boolean
+  loading?: boolean;
 }
 
 const InputSelect: React.FC<SelectComponentProps> = ({
   options,
   onSelect,
   value,
-  placeholder = "Select an option",
+  placeholder = "Select service type",
   required = false,
   testId,
   classesName,
   displayLabel = true,
-  loading
+  loading,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
@@ -66,22 +66,26 @@ const InputSelect: React.FC<SelectComponentProps> = ({
 
       <input
         data-testid={testId}
-        className={`select-input ${classesName || ""} ${loading ? "loading-select" : ""}`}
-        placeholder={displayLabel ? "" : displayLabel || placeholder}
+        className={`select-input ${classesName || ""} ${
+          loading ? "loading-select" : ""
+        }`}
         value={selectedLabel || ""}
         readOnly
         onClick={toggleSelect}
-        id={testId} 
+        id={testId}
+        aria-required={required}
       />
 
       {isOpen && (
-        <ul className="select-menu" data-testid="select-menu">
+        <ul className="select-menu" data-testid="select-menu" role="listbox">
           {options.map((option) => (
             <li
               key={option.value}
               className="select-option"
               data-testid="select-option"
               onClick={() => handleOptionClick(option.value)}
+              role="option"
+              aria-selected={option.value === value}
             >
               {option.label}
             </li>

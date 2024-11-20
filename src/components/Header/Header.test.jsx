@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import Header from "./index";
 import ids from "./test-ids.json";
@@ -19,7 +19,6 @@ describe("Header", () => {
             </MemoryRouter>
         );
 
-        await waitFor(() => {
             expect(screen.getByTestId(ids.navLinkHeader)).toBeInTheDocument();
             
             expect(screen.getByText("Home")).toBeInTheDocument();
@@ -27,6 +26,5 @@ describe("Header", () => {
 
             const lastBreadcrumb = screen.getByText("Orders");
             expect(lastBreadcrumb.closest("span")).toHaveClass("header__link");
-        });
     });
 });

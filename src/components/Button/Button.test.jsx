@@ -8,10 +8,8 @@ describe("Button Component", () => {
 
     const button = screen.getByTestId('button');
 
-    await waitFor(() => {
       expect(button).toBeInTheDocument();
       expect(button).toHaveTextContent("Submit");
-    });
   });
 
   it("should call onClick when clicked", async () => {

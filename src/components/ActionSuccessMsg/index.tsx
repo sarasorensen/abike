@@ -6,7 +6,7 @@ interface ActionSuccessMsgProps {
 
 const ActionSuccessMsg: React.FC<ActionSuccessMsgProps> = ({ action }) => {
   return (
-    <div className="success-message">
+    <div role="status" aria-live="polite" className="success-message">
       <p>{action} successful</p>
       <FaCheckCircle className="check-icon" />
     </div>

@@ -1,20 +1,26 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, {
+  useState,
+  useEffect,
+  ChangeEvent,
+  useCallback,
+  useMemo,
+} from "react";
 import { useNavigate } from "react-router-dom";
-import { FaFilterCircleXmark } from "react-icons/fa6";
 import { useDeleteConfirmationModal } from "../../hooks/useDeleteConfirmationModal";
+import { services } from "../../shared-constants/services";
+import TableFilter from "../../components/TableFilter";
 import DeleteConfirmationModal from "../../components/DeleteConfirmationModal";
 import ActionSuccessMsg from "../../components/ActionSuccessMsg";
 import Dropdown from "../../components/Dropdown";
-import InputField from "../../components/InputField";
-import InputSelect from "../../components/InputSelect";
 import NoContentFound from "../../components/NoContentFound";
-import { services } from "../../shared-constants/services";
-import { MaintenanceOrder } from "../../types/maintenanceOrder";
+import {
+  MaintenanceOrder,
+  defaultMaintenancefilter,
+} from "../../types/maintenanceOrder";
+import { formatDate } from "../../utilities/formatDate";
 import { getOrdersFromStorage } from "../../utilities/ordersStorage";
 import { getServiceTypeLabel } from "../../utilities/getServiceTypeLabel";
 import { sortByColumn } from "../../utilities/sortByColumn";
-import { testId } from "../../utilities/testId";
-import ids from "./test-ids.json";
 import "./OrdersList.scss";
 
 type SortDirection = "asc" | "desc";
@@ -22,14 +28,7 @@ type SortDirection = "asc" | "desc";
 const OrdersList: React.FC = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState<MaintenanceOrder[]>([]);
-  const [filters, setFilters] = useState({
-    customerName: "",
-    phoneNumber: "",
-    email: "",
-    bikeBrand: "",
-    serviceType: "",
-    dueDate: "",
-  });
+  const [filters, setFilters] = useState(defaultMaintenancefilter);
   const [sortConfig, setSortConfig] = useState({
     column: "customerName",
     direction: "asc" as SortDirection,
@@ -60,21 +59,17 @@ const OrdersList: React.FC = () => {
       navigate(`/orders/details/${id}`);
     }
   };
+  const handleSearchChange = useCallback((field: string, value: string) => {
+    setFilters((prev) => ({ ...prev, [field]: value }));
+  }, []);
 
-  const handleSearchChange = (field: keyof typeof filters, value: string) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [field]: value,
-    }));
-  };
-
-  const handleSort = (column: string) => {
+  const handleSort = useCallback((column: string) => {
     setSortConfig((prev) => ({
       column,
       direction:
         prev.column === column && prev.direction === "asc" ? "desc" : "asc",
     }));
-  };
+  }, []);
 
   const handleFilterChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -86,48 +81,53 @@ const OrdersList: React.FC = () => {
     }));
   };
 
-  const filterOrders = () => {
+  const filterOrders = useMemo(() => {
     return orders.filter((order) => {
       const matchesFilters = Object.entries(filters).every(([key, value]) => {
-        if (!value) return true; // Skip empty filters
+        if (!value) return true;
 
-        const field = order[key as keyof MaintenanceOrder]; // Access field directly
-        if (!field || typeof field !== "string") return false; // Ensure field exists and is a string
+        const field = order[key as keyof MaintenanceOrder];
+        if (!field || typeof field !== "string") return false;
 
-        return field.toLowerCase().includes(value.toLowerCase()); // Perform case-insensitive comparison
+        return field.toLowerCase().includes(value.toLowerCase());
       });
 
-      const matchesServiceType =
-        !filters.serviceType || // Skip if serviceType filter is not set
-        (order.serviceType &&
-          order.serviceType.toLowerCase() ===
-            filters.serviceType.toLowerCase());
-
-      return matchesFilters && matchesServiceType;
+      return (
+        matchesFilters &&
+        (!filters.serviceType ||
+          order.serviceType?.toLowerCase() ===
+            filters.serviceType.toLowerCase())
+      );
     });
-  };
+  }, [orders, filters]);
 
   useEffect(() => {
-    setFilteredOrders(filterOrders());
+    setFilteredOrders(filterOrders);
     // eslint-disable-next-line
   }, [orders, filters]);
 
-  const resetFilters = () => {
-    setFilters({
-      customerName: "",
-      phoneNumber: "",
-      email: "",
-      bikeBrand: "",
-      serviceType: "",
-      dueDate: "",
-    });
+  const resetFilters = useCallback(() => {
+    setFilters(defaultMaintenancefilter);
     setFilteredOrders(orders);
-  };
+  }, [orders]);
 
-  const sortedOrders = sortByColumn(
-    filteredOrders,
-    sortConfig.column,
-    sortConfig.direction
+  const sortedOrders = useMemo(() => {
+    return sortByColumn(
+      filteredOrders,
+      sortConfig.column,
+      sortConfig.direction
+    );
+  }, [filteredOrders, sortConfig]);
+
+  const serviceTypeOptions = useMemo(
+    () => [
+      { label: "All", value: "" },
+      ...services.map((service) => ({
+        label: service.label,
+        value: service.value,
+      })),
+    ],
+    []
   );
 
   return (
@@ -144,87 +144,25 @@ const OrdersList: React.FC = () => {
 
       {orders.length > 0 && (
         <table className="table table-hover">
-          <thead>
-            <tr className="filters-heading">
-              {[
-                "customer Name",
-                "phone Number",
-                "email",
-                "bike Brand",
-                "due Date",
-                "service Type",
-              ].map((column) => (
-                <th key={column} onClick={() => handleSort(column)}>
-                  {column.charAt(0).toUpperCase() + column.slice(1)}{" "}
-                  {sortConfig.column === column &&
-                    (sortConfig.direction === "asc" ? "↑" : "↓")}
-                </th>
-              ))}
-              <th></th>
-            </tr>
-
-            <tr className="filters-container">
-              {[
-                "customerName",
-                "phoneNumber",
-                "email",
-                "bikeBrand",
-                "dueDate",
-              ].map((field) => (
-                <th key={field}>
-                  <InputField
-                    type={field === "dueDate" ? "date" : "text"}
-                    value={filters[field as keyof typeof filters]}
-                    onChange={(e) => handleFilterChange(e, field)}
-                    onClear={() =>
-                      handleSearchChange(field as keyof typeof filters, "")
-                    }
-                    placeholder={`Filter by ${field
-                      .replace(/([a-z])([A-Z])/g, "$1 $2")
-                      .replace(/^./, (str) => str.toUpperCase())}`}
-                    name={`search${
-                      field.charAt(0).toUpperCase() + field.slice(1)
-                    }`}
-                    classesName="input-field--white"
-                    testId={
-                      ids[
-                        `inputSearch${
-                          field.charAt(0).toUpperCase() + field.slice(1)
-                        }` as keyof typeof ids
-                      ]
-                    }
-                  />
-                </th>
-              ))}
-              <th>
-                <InputSelect
-                  options={[
-                    { label: "All", value: "" },
-                    ...services.map((service) => ({
-                      label: service.label,
-                      value: service.value,
-                    })),
-                  ]}
-                  value={filters.serviceType}
-                  onSelect={(value) => handleSearchChange("serviceType", value)}
-                  placeholder="Select service type"
-                  classesName="select-input--white"
-                  displayLabel={false}
-                  testId={ids.selectServiceType}
-                />
-              </th>
-
-              <th>
-                <span
-                  onClick={resetFilters}
-                  className="reset-filter-icon"
-                  {...testId(ids.resetFilter)}
-                >
-                  <FaFilterCircleXmark />
-                </span>
-              </th>
-            </tr>
-          </thead>
+          <TableFilter
+            filters={filters}
+            handleFilterChange={handleFilterChange}
+            handleSearchChange={handleSearchChange}
+            resetFilters={resetFilters}
+            handleSort={handleSort}
+            sortConfig={sortConfig} 
+            fields={[
+              "customerName",
+              "phoneNumber",
+              "email",
+              "bikeBrand",
+              "dueDate",
+              "serviceType",
+            ]}
+            selectOptions={{
+              serviceType: serviceTypeOptions,
+            }}
+          />
           <tbody>
             {sortedOrders.map((order) => (
               <tr key={order.id} onClick={(e) => handleRowClick(order.id, e)}>
@@ -232,7 +170,7 @@ const OrdersList: React.FC = () => {
                 <td data-label="Phone Number">{order.phoneNumber}</td>
                 <td data-label="Email">{order.email}</td>
                 <td data-label="Bike Brand">{order.bikeBrand}</td>
-                <td data-label="Due Date">{order.dueDate}</td>
+                <td data-label="Due Date">{formatDate(order.dueDate)}</td>
                 <td data-label="Service type">
                   {getServiceTypeLabel(order.serviceType)}
                 </td>
@@ -265,14 +203,14 @@ const OrdersList: React.FC = () => {
         </table>
       )}
 
-      {sortedOrders.length === 0 && (
+      {orders.length === 0 ? (
+        <NoContentFound />
+      ) : sortedOrders.length === 0 ? (
         <div className="empty-content-wrap">
-          <h2> Sorry, we couldn't find any matches</h2>
+          <h2>Sorry, we couldn't find any matches</h2>
           <p>Please try again or reset filter</p>
         </div>
-      )}
-
-      {orders.length === 0 && <NoContentFound />}
+      ) : null}
 
       {showModal && (
         <DeleteConfirmationModal

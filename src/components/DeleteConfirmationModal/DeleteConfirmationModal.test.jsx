@@ -64,7 +64,7 @@ describe("DeleteConfirmationModal", () => {
     fireEvent.click(confirmButton);
 
     await waitFor(() => {
-      expect(mockOnConfirm).toBeCalledTimes(1);
+      expect(mockOnConfirm).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -87,8 +87,8 @@ describe("DeleteConfirmationModal", () => {
     fireEvent.click(cancelButton);
 
     await waitFor(() => {
-        expect(mockOnCancel).toBeCalledTimes(1);
-      });
+        expect(mockOnCancel).toHaveBeenCalledTimes(1);
+    })
   });
 
   it("does not allow confirmation if no order is selected", async () => {
@@ -103,9 +103,10 @@ describe("DeleteConfirmationModal", () => {
     );
 
     const confirmButton = screen.getByTestId("button_delete_order");
+
     await waitFor(() => {
       expect(confirmButton).toBeDisabled();
-      expect(mockOnCancel).toBeCalledTimes(0);
-    });
+      expect(mockOnCancel).toHaveBeenCalledTimes(0);
+    })
   });
 });

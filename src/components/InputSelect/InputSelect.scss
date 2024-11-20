@@ -41,7 +41,6 @@
       border-color: vars.$placeholder-color;
       box-shadow: vars.$box-shadow;
     }
-    
   }
 
   .select-input--white {
@@ -74,11 +73,9 @@
     }
 
     @media (max-width: 768px) {
-      margin-top: vars.$spacing-small;
       margin-bottom: 0;
     }
   }
-
 
   .select-menu {
     position: absolute;
@@ -91,7 +88,7 @@
     overflow-y: auto;
     box-shadow: vars.$box-shadow;
     z-index: 1000;
-
+    text-align: left;
     .select-option {
       font-size: vars.$font-size-label;
       font-weight: 450;
@@ -108,4 +105,3 @@
     margin-bottom: vars.$spacing-medium;
   }
 }
-

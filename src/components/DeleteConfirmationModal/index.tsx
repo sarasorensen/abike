@@ -37,10 +37,6 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
     }
   };
 
-  const handleConfirm = () => {
-    onConfirm();
-  };
-
   useEffect(() => {
     const ordersFromStorage = getOrdersFromStorage();
     setOrders(ordersFromStorage);
@@ -71,7 +67,7 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
             testId={ids.buttonCancelOrder}
           />
           <Button
-            onClick={handleConfirm}
+            onClick={onConfirm}
             label={"Confirm"}
             disabled={!orderDetails}
             testId={ids.buttonDeleteOrder}

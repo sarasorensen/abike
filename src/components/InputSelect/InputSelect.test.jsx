@@ -26,7 +26,7 @@ describe("InputSelect Component", () => {
     await waitFor(() => {
       expect(screen.getByTestId("input-select")).toBeInTheDocument();
       expect(
-        screen.getByText("Select an option")
+        screen.getByLabelText("Select service type")
       ).toBeInTheDocument();
     });
   });
@@ -125,7 +125,7 @@ describe("InputSelect Component", () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText("Select an option")).toBeInTheDocument();
+      expect(screen.getByText("Select service type")).toBeInTheDocument();
     });
   });
 
@@ -140,7 +140,7 @@ describe("InputSelect Component", () => {
     );
 
     await waitFor(() => {
-      expect(screen.queryByText("Select an option")).not.toBeInTheDocument();
+      expect(screen.queryByText("Select service type")).not.toBeInTheDocument();
     });
   });
 

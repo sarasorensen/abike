@@ -41,6 +41,12 @@
     &:hover {
       color: vars.$primary-color;
     }
+    &--last{
+      cursor: default;
+      &:hover {
+        color: vars.$tertiary-color;
+      }
+    }
   }
 }
 .header__separator {

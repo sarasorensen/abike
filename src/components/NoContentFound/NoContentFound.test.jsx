@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { useNavigate } from "react-router-dom";
 import NoContentFound from "./index";
 
@@ -10,14 +10,10 @@ describe("NoContentFound Component", () => {
   it("should render 'No orders found' and 'Create new order' button", async () => {
     render(<NoContentFound />);
 
-    await waitFor(() => {
-      expect(screen.getByText("No orders found")).toBeInTheDocument();
-    });
-    const button = screen.getByText("Create new order");
+    expect(screen.getByText("No orders found")).toBeInTheDocument();
 
-    await waitFor(() => {
-      expect(button).toBeInTheDocument();
-    });
+    const button = screen.getByTestId("create-order-button");
+    expect(button).toBeInTheDocument();
   });
 
   it("should navigate to /orders/new when the button is clicked", async () => {
@@ -26,11 +22,9 @@ describe("NoContentFound Component", () => {
 
     render(<NoContentFound />);
 
-    const button = screen.getByText("Create new order");
+    const button = screen.getByTestId("create-order-button");
     fireEvent.click(button);
 
-    await waitFor(() => {
-      expect(navigate).toHaveBeenCalledWith("/orders/new");
-    });
+    expect(navigate).toHaveBeenCalledWith("/orders/new");
   });
 });

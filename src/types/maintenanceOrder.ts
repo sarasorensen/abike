@@ -8,3 +8,24 @@ export interface MaintenanceOrder {
   dueDate: string;
   notes: string;
 }
+
+export const defaultMaintenanceOrderData: MaintenanceOrder = {
+  id: "",
+  customerName: "",
+  phoneNumber: "",
+  email: "",
+  bikeBrand: "",
+  serviceType: "",
+  dueDate: "",
+  notes: "",
+};
+
+export const defaultMaintenancefilter = {
+  id: "",
+  customerName: "",
+  phoneNumber: "",
+  email: "",
+  bikeBrand: "",
+  serviceType: "",
+  dueDate: ""
+};

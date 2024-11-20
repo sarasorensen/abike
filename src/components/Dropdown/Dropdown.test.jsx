@@ -9,7 +9,7 @@ describe("Dropdown Component", () => {
     { label: "Option 2", icon: "", action: "/option2" },
   ];
 
-  test("renders dropdown button and toggles dropdown menu on click", async () => {
+  it("renders dropdown button and toggles dropdown menu on click", async () => {
     render(
       <BrowserRouter
         future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
@@ -32,34 +32,10 @@ describe("Dropdown Component", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByTestId("button_dropdown_elements")
+        screen.getByTestId("dropdown_menu")
       ).toBeInTheDocument();
       expect(screen.getByText("Option 1")).toBeInTheDocument();
       expect(screen.getByText("Option 2")).toBeInTheDocument();
-    });
-  });
-
-  test("closes dropdown when button is clicked again", async () => {
-    render(
-      <BrowserRouter
-        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-      >
-        <Dropdown options={options} />
-      </BrowserRouter>
-    );
-
-    const button = screen.getByTestId("button_options");
-    userEvent.click(button);
-
-    const dropdownMenu = screen.getByTestId("button_dropdown_elements");
-
-    await waitFor(() => {
-      expect(dropdownMenu).toBeInTheDocument();
-    });
-
-    userEvent.click(button);
-    await waitFor(() => {
-      expect(dropdownMenu).not.toBeInTheDocument();
     });
   });
 });

@@ -36,9 +36,7 @@ const InputField: React.FC<InputFieldProps> = ({
   loading,
 }) => {
   const handleClear = () => {
-    if (onClear) {
-      onClear();
-    }
+    if (onClear) onClear();
   };
 
   return (
@@ -57,6 +55,7 @@ const InputField: React.FC<InputFieldProps> = ({
           required={required}
           id={testId}
           data-testid={testId}
+          aria-required={required}
           aria-describedby={showError ? `${testId}-error` : undefined}
         />
       ) : (
@@ -72,6 +71,7 @@ const InputField: React.FC<InputFieldProps> = ({
             required={required}
             id={testId}
             data-testid={testId}
+            aria-required={required}
             aria-describedby={showError ? `${testId}-error` : undefined}
           />
           {value && onClear && (

@@ -2,15 +2,12 @@
 
 .form-card {
   background-color: #fff;
-  border-radius: vars.$border-radius;
 
   .card-header {
     display: flex;
     align-items: center;
     color: vars.$primary-color;
     padding: vars.$spacing-small;
-    border-top-left-radius: vars.$border-radius;
-    border-top-right-radius: vars.$border-radius;
     &--icon {
       font-size: 1.75em;
       margin-right: vars.$spacing-small;

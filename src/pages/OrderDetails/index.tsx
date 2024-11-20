@@ -4,12 +4,13 @@ import { FaBicycle } from "react-icons/fa";
 import { MdOutlineNoteAlt } from "react-icons/md";
 import { RxAvatar } from "react-icons/rx";
 import { useDeleteConfirmationModal } from "../../hooks/useDeleteConfirmationModal";
-import Button from "../../components/Button/index";
-import DeleteConfirmationModal from "../../components/DeleteConfirmationModal/index";
-import ActionSuccessMsg from "../../components/ActionSuccessMsg/index";
-import Dropdown from "../../components/Dropdown/index";
-import NoContentFound from "../../components/NoContentFound/index";
+import Button from "../../components/Button";
+import DeleteConfirmationModal from "../../components/DeleteConfirmationModal";
+import ActionSuccessMsg from "../../components/ActionSuccessMsg";
+import Dropdown from "../../components/Dropdown";
+import NoContentFound from "../../components/NoContentFound";
 import { MaintenanceOrder } from "../../types/maintenanceOrder";
+import { formatDate } from '../../utilities/formatDate';
 import { getOrdersFromStorage } from "../../utilities/ordersStorage";
 import { getServiceTypeLabel } from "../../utilities/getServiceTypeLabel";
 import "./OrderDetails.scss";
@@ -18,10 +19,7 @@ import ids from "./test-ids.json";
 const OrderDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [orders, setOrders] = useState<MaintenanceOrder[]>([]);
-  const [orderDetails, setOrderDetails] = useState<MaintenanceOrder | null>(
-    null
-  );
+  const [orderDetails, setOrderDetails] = useState<MaintenanceOrder | null>(null);
   const {
     showModal,
     deleteId,
@@ -32,33 +30,23 @@ const OrderDetails: React.FC = () => {
   } = useDeleteConfirmationModal();
 
   useEffect(() => {
-    if (id) {
-      const order = orders.find((order) => order.id === id);
-      if (order) {
-        setOrderDetails(order);
-      }
-    }
-  }, [orders, id, navigate]);
-
-  useEffect(() => {
     const storedOrders = getOrdersFromStorage();
-    setOrders(storedOrders);
-  }, []);
+    const foundOrder = storedOrders.find((order) => order.id === id);
+    setOrderDetails(foundOrder || null);
+  }, [id]);
 
   return (
     <div className="page-wrap w-50">
-      {orderDetails !== null && (
+      {orderDetails === null ? (
+        <NoContentFound />
+      ) : (
         <>
           <div className="header-container">
             <h1>Order Details</h1>
             <Dropdown
               options={[
-                {
-                  label: "Edit Order",
-                  action: `/orders/details/${id}/edit`,
-                  icon: "FaEdit",
-                },
-                { label: "Delete order", icon: "FaTrashAlt", id: id },
+                { label: "Edit Order", action: `/orders/details/${id}/edit`, icon: "FaEdit" },
+                { label: "Delete order", icon: "FaTrashAlt", id },
               ]}
               onSelect={handleSelect}
             />
@@ -73,13 +61,13 @@ const OrderDetails: React.FC = () => {
             <div className="card-body">
               <div className="row">
                 <div className="col-sm-6">
-                  <label>Customer Name:</label> {orderDetails?.customerName}
+                  <label>Customer Name:</label> {orderDetails.customerName}
                 </div>
                 <div className="col-sm-6">
-                  <label>Phone Number:</label> {orderDetails?.phoneNumber}
+                  <label>Phone Number:</label> {orderDetails.phoneNumber}
                 </div>
                 <div className="col-sm-6">
-                  <label>Email:</label> {orderDetails?.email}
+                  <label>Email:</label> {orderDetails.email}
                 </div>
               </div>
             </div>
@@ -91,19 +79,18 @@ const OrderDetails: React.FC = () => {
             <div className="card-body">
               <div className="row">
                 <div className="col-sm-6">
-                  <label>Bike Brand:</label> {orderDetails?.bikeBrand}
+                  <label>Bike Brand:</label> {orderDetails.bikeBrand}
                 </div>
                 <div className="col-sm-6">
-                  <label>Service Type:</label>{" "}
-                  {getServiceTypeLabel(orderDetails.serviceType)}
+                  <label>Service Type:</label> {getServiceTypeLabel(orderDetails.serviceType)}
                 </div>
                 <div className="col-sm-12">
-                  <label>Due Date:</label> {orderDetails?.dueDate}
+                  <label>Due Date:</label> {formatDate(orderDetails.dueDate)}
                 </div>
               </div>
             </div>
 
-            {orderDetails?.notes && (
+            {orderDetails.notes && (
               <>
                 <div className="card-header">
                   <MdOutlineNoteAlt className="card-header--icon" />
@@ -111,7 +98,7 @@ const OrderDetails: React.FC = () => {
                 </div>
                 <div className="card-body">
                   <div className="row">
-                    <div className="col-sm-12">{orderDetails?.notes}</div>
+                    <div className="col-sm-12">{orderDetails.notes}</div>
                   </div>
                 </div>
               </>
@@ -128,8 +115,6 @@ const OrderDetails: React.FC = () => {
         </>
       )}
 
-      {orderDetails === null && <NoContentFound />}
-
       {showModal && (
         <DeleteConfirmationModal
           onConfirm={confirmDelete}
@@ -137,6 +122,7 @@ const OrderDetails: React.FC = () => {
           orderId={deleteId}
         />
       )}
+
       {showSuccessMessage && <ActionSuccessMsg action="Delete" />}
     </div>
   );

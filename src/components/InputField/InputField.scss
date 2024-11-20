@@ -49,6 +49,7 @@
     }
   }
   &.input-field--white {
+    cursor: default;
     margin: 0;
     input {
       background-color: #fff;
@@ -70,17 +71,23 @@
     }
   }
   .error-message {
+    position: absolute;
+    top: 100%;
     text-align: left;
     font-size: vars.$font-size-error;
     color: vars.$error-color;
     margin-top: vars.$spacing-small;
+    visibility: hidden;
+  }
+  .error-message[role="alert"] {
+    visibility: visible; 
   }
 }
 
 .clear-icon {
   position: absolute;
   right: 10px;
-  top: 60%;
+  top: 45%;
   transform: translateY(-50%);
   font-size: 16px;
   color: vars.$placeholder-color;

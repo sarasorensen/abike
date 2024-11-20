@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import InputField from "./index";
 import ids from "./test-ids.json";
 
@@ -17,9 +17,7 @@ describe("InputField Component", () => {
 
     const input = screen.getByTestId(ids.input);
 
-    await waitFor(() => {
-      expect(input).toBeInTheDocument();
-      expect(input).toHaveValue("John Doe");
-    });
-  })
+    expect(input).toBeInTheDocument();
+    expect(input).toHaveValue("John Doe");
+  });
 });

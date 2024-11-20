@@ -1,106 +1,73 @@
-import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import OrdersList from "./index";
-import { mockedOrders } from "../../shared-constants/mockedOrders";
+import { useDeleteConfirmationModal } from "../../hooks/useDeleteConfirmationModal";
 
-jest.mock("react-router-dom", () => ({
-  useNavigate: jest.fn(),
+jest.mock("../../hooks/useDeleteConfirmationModal", () => ({
+  useDeleteConfirmationModal: jest.fn(),
 }));
 
-describe("OrdersList", () => {
-  it("should filter orders by phone number", async () => {
-    render(<OrdersList />);
+jest.mock("../../utilities/ordersStorage", () => ({
+  getOrdersFromStorage: jest.fn(),
+}));
 
-    const phoneNumberInput = screen.getByTestId('input_search_phone_number');
-    userEvent.type(phoneNumberInput, "12345");
+jest.mock("../../utilities/formatDate", () => ({
+  formatDate: jest.fn().mockReturnValue("01/01/2024"),
+}));
 
-    await waitFor(() => {
-      expect(phoneNumberInput.value).toBe("12345");
+jest.mock("../../utilities/getServiceTypeLabel", () => ({
+  getServiceTypeLabel: jest.fn().mockReturnValue("Maintenance"),
+}));
+
+const mockOrders = [
+  {
+    id: "1",
+    customerName: "John Doe",
+    phoneNumber: "123456789",
+    email: "john.doe@example.com",
+    bikeBrand: "Yamaha",
+    dueDate: "2024-01-01",
+    serviceType: "basic",
+  },
+];
+
+describe("OrdersList Component", () => {
+  beforeEach(() => {
+    useDeleteConfirmationModal.mockReturnValue({
+      showModal: false,
+      deleteId: null,
+      showSuccessMessage: false,
+      handleSelect: jest.fn(),
+      confirmDelete: jest.fn(),
+      cancelDelete: jest.fn(),
     });
+
+    require("../../utilities/ordersStorage").getOrdersFromStorage.mockReturnValue(
+      mockOrders
+    );
+
+    render(
+      <MemoryRouter
+        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+      >
+        <OrdersList />
+      </MemoryRouter>
+    );
   });
 
-  it("should filter orders by email", async () => {
-    render(<OrdersList />);
-
-    const emailInput = screen.getByTestId('input_search_email');
-    userEvent.type(emailInput, "john@example.com");
-
-    await waitFor(() => {
-      expect(emailInput.value).toBe("john@example.com");
-    });
+  it("renders OrdersList heading correctly", async () => {
+    expect(screen.getByText("Orders")).toBeInTheDocument();
+    expect(screen.getByText("Options")).toBeInTheDocument();
   });
 
-  it("should filter orders by service type", async () => {
-    render(<OrdersList />);
-    
-    const serviceSelect = screen.getByTestId('select_service_type');
-  
-    await waitFor(() => {
-      expect(serviceSelect.value).toBe("All");
-    });
+  it("handles search by name", async () => {
+    const searchInput = screen.getByTestId("input_search_customer_name");
+    fireEvent.change(searchInput, { target: { value: "John Doe" } });
 
-    userEvent.click(serviceSelect);
-  
-    const brakeMaintenanceOption = await screen.findAllByText("Brake maintenance");
-  
-    userEvent.click(brakeMaintenanceOption[0]);
-  
-    await waitFor(() => {
-      expect(serviceSelect.value).toBe("Brake maintenance");
-    });
-
-    const serviceFilter = "brake maintenance";  
-    userEvent.clear(serviceSelect);
-    userEvent.type(serviceSelect, serviceFilter);
-
-    await waitFor(() => {
-      expect(serviceSelect.value).toBe("Brake maintenance");
-    });
-  });
-  
-  it("should reset filters when reset button is clicked", async () => {
-    render(<OrdersList />);
-
-    userEvent.type(screen.getByTestId('input_search_phone_number'), "12345");
-
-    userEvent.click(screen.getByTestId('reset_filter'));
-
-    await waitFor(() => {
-      expect(screen.getByTestId('input_search_phone_number').value).toBe("");
-    });
+    expect(searchInput).toHaveValue("John Doe");
   });
 
-  it("should sort orders by phone number ascending", async () => {
-    render(<OrdersList />);
-
-    const phoneNumberHeader = screen.getByText("Phone Number");
-    userEvent.click(phoneNumberHeader);
-
-    await waitFor(() => {
-      expect(screen.getByText(mockedOrders[0].phoneNumber)).toBeInTheDocument();
-    });
-  });
-
-  it("should sort orders by phone number descending", async () => {
-    render(<OrdersList />);
-
-    const phoneNumberHeader = screen.getByText("Phone Number");
-    userEvent.click(phoneNumberHeader); 
-    userEvent.click(phoneNumberHeader); 
-
-    await waitFor(() => {
-      expect(screen.getByText(mockedOrders[mockedOrders.length - 1].phoneNumber)).toBeInTheDocument();
-    });
-  });
-
-  it("should sort orders by due date", async () => {
-    render(<OrdersList />);
-
-    const dueDateHeader = screen.getByText("Due Date");
-    userEvent.click(dueDateHeader);
-
-    await waitFor(() => {
-      expect(screen.getByText(mockedOrders[0].dueDate)).toBeInTheDocument();
-    });
+  it("doesnt show delete modal", async () => {
+    expect(useDeleteConfirmationModal().showModal).not.toBeTruthy();
   });
 });

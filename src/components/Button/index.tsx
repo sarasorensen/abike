@@ -23,8 +23,9 @@ const Button: React.FC<ButtonProps> = ({
     onClick={onClick}
     data-testid={testId}
     type={type}
-    aria-label={typeof label === "string" ? label : type}
+    aria-label={typeof label === "string" ? label : "Button"} 
     disabled={disabled}
+    aria-disabled={disabled} 
   >
     {label}
   </button>

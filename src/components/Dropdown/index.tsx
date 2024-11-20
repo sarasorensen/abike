@@ -9,6 +9,7 @@ import {
   FaPlus,
 } from "react-icons/fa";
 import Button from "../Button/index";
+import {testId} from "../../utilities/testId"
 import ids from "./test-ids.json";
 import "./Dropdown.scss";
 
@@ -16,23 +17,21 @@ interface DropdownProps {
   options: {
     label: string;
     action?: string;
-    icon?: string;
+    icon?: keyof typeof iconMapping;
     id?: string;
   }[];
   type?: string;
   onSelect?: (label: string, id?: string) => void;
 }
 
-type IconMapping = {
-  [key: string]: React.ComponentType<any>;
-};
-
-const iconMapping: IconMapping = {
+const iconMapping = {
   FaEye,
   FaEdit,
   FaTrashAlt,
   FaPlus,
 };
+
+type IconMapping = typeof iconMapping;
 
 const Dropdown: React.FC<DropdownProps> = ({ options, type, onSelect }) => {
   const navigate = useNavigate();
@@ -59,7 +58,9 @@ const Dropdown: React.FC<DropdownProps> = ({ options, type, onSelect }) => {
     };
   }, []);
 
-  const getIcon = (iconName: string) => {
+  const getIcon = (iconName?: keyof IconMapping) => {
+    if (!iconName) return null;
+
     const IconComponent = iconMapping[iconName];
     return IconComponent ? <IconComponent /> : null;
   };
@@ -88,7 +89,7 @@ const Dropdown: React.FC<DropdownProps> = ({ options, type, onSelect }) => {
             </>
           }
           onClick={toggleDropdown}
-          testId={ids.buttonOptions}
+          testId={`${ids.buttonOptions}_table`}
         />
       ) : (
         <Button
@@ -106,7 +107,7 @@ const Dropdown: React.FC<DropdownProps> = ({ options, type, onSelect }) => {
       )}
 
       {isOpen && (
-        <ul className="dropdown-menu" data-testid="button_dropdown_elements">
+        <ul className="dropdown-menu" {...testId(ids.dropdownMenu)}>
           {options.map((option, index) => (
             <li
               key={index}

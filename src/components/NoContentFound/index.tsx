@@ -1,21 +1,21 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../Button/index";
+import Button from "../Button";
 
 const NoContentFound: React.FC = () => {
   const navigate = useNavigate();
 
-  const goToNewOrders = () => {
+  const goToNewOrders = useCallback(() => {
     navigate("/orders/new");
-  };
+  }, [navigate]);
 
   return (
-    <div className="empty-content-wrap">
+    <section className="empty-content-wrap">
       <h2>No orders found</h2>
       <p>
-        <Button onClick={goToNewOrders} label="Create new order" testId={""} />
+        <Button onClick={goToNewOrders} label="Create new order" testId="create-order-button" />
       </p>
-    </div>
+    </section>
   );
 };
 

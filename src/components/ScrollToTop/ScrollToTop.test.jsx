@@ -1,4 +1,4 @@
-import { render, waitFor } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import ScrollToTop from "./index";
 
@@ -16,9 +16,6 @@ describe("ScrollToTop Component", () => {
     );
 
     window.history.pushState({}, "", "/new-route");
-
-    await waitFor(() =>{
     expect(global.scrollTo).toHaveBeenCalledWith(0, 0);
-    })
   });
 });

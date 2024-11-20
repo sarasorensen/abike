@@ -98,6 +98,9 @@ table {
 .filters-heading {
   background-color: transparent !important;
   box-shadow: none;
+  & input{
+    margin-bottom: vars.$spacing-small;
+  }
   th {
     padding-top: 0;
     padding-bottom: 0;

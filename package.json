@@ -10,6 +10,7 @@
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "css-loader": "^7.1.2",
+    "dompurify": "^3.2.1",
     "postcss-loader": "^8.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -25,6 +26,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "cross-env CI=true react-scripts test --env=jsdom",
+    "test:watch": "react-scripts test --env=jsdom --watch",
     "eject": "react-scripts eject",
     "lint": "eslint src"
   },

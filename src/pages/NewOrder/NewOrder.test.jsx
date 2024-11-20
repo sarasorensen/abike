@@ -1,9 +1,7 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import {
-  getOrdersFromStorage,
-  addOrder,
-  editOrder,
+  getOrdersFromStorage
 } from "../../utilities/ordersStorage";
 import NewOrder from "./index";
 
@@ -32,7 +30,6 @@ describe("NewOrder Component", () => {
       </Router>
     );
 
-    await waitFor(() => {
       expect(screen.getByTestId("input_customer_name")).toBeInTheDocument();
       expect(screen.getByTestId("input_phone_number")).toBeInTheDocument();
       expect(screen.getByTestId("input_email")).toBeInTheDocument();
@@ -42,6 +39,5 @@ describe("NewOrder Component", () => {
       expect(screen.getByTestId("text_area_notes")).toBeInTheDocument();
       expect(screen.getByTestId("button_cancel_maintenance")).toBeInTheDocument();
       expect(screen.getByTestId("button_submit_maintenance")).toBeInTheDocument();
-    });
   });
 });
