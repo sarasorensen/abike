@@ -58,11 +58,11 @@
     background-position: right 0.7rem top 50%;
     background-size: 0.65rem auto;
     &:not(:placeholder-shown) {
-      color: vars.$tertiary-color;
+      color: vars.$placeholder-color;
     }
 
     &::placeholder {
-      color: vars.$tertiary-color;
+      color: vars.$placeholder-color;
       padding-right: vars.$spacing-large;
     }
 
