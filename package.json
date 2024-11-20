@@ -7,7 +7,6 @@
     "@types/node": "^22.9.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "css-loader": "^7.1.2",
     "dompurify": "^3.2.1",
@@ -25,16 +24,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "cross-env CI=true react-scripts test --env=jsdom",
-    "test:watch": "react-scripts test --env=jsdom --watch",
+    "test": "cross-env CI=true react-scripts test --env=jsdom --watch",
     "eject": "react-scripts eject",
     "lint": "eslint src"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint && npm test",
-      "pre-push": "npm run lint && npm test"
-    }
   },
   "eslintConfig": {
     "extends": [
@@ -62,7 +54,6 @@
     "@types/axios": "^0.14.4",
     "@types/jest": "^29.5.14",
     "cross-env": "^7.0.3",
-    "husky": "^9.1.7",
     "jest": "^27.5.1",
     "json-server": "^1.0.0-beta.3",
     "lint-staged": "^15.2.10",
