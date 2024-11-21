@@ -5,6 +5,7 @@ import { MaintenanceOrder } from "../types/maintenanceOrder";
 
 export const useDeleteConfirmationModal = (setOrders?: React.Dispatch<React.SetStateAction<MaintenanceOrder[]>>) => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false);
@@ -18,6 +19,7 @@ export const useDeleteConfirmationModal = (setOrders?: React.Dispatch<React.SetS
 
   const confirmDelete = useCallback(() => {
     if (deleteId) {
+      setLoading(true)
       deleteOrder(deleteId);
 
       if (setOrders) {
@@ -37,6 +39,7 @@ export const useDeleteConfirmationModal = (setOrders?: React.Dispatch<React.SetS
     if (showSuccessMessage) {
       const timer = setTimeout(() => {
         setShowSuccessMessage(false);
+        setLoading(false)
         navigate("/");
       }, 2500);
 
@@ -48,6 +51,7 @@ export const useDeleteConfirmationModal = (setOrders?: React.Dispatch<React.SetS
     showModal,
     deleteId,
     showSuccessMessage,
+    loading,
     handleSelect,
     confirmDelete,
     cancelDelete,
