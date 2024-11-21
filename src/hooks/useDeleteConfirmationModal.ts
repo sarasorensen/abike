@@ -1,10 +1,11 @@
 import { useState, useCallback, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { deleteOrder, getOrdersFromStorage } from "../utilities/ordersStorage";
 import { MaintenanceOrder } from "../types/maintenanceOrder";
 
 export const useDeleteConfirmationModal = (setOrders?: React.Dispatch<React.SetStateAction<MaintenanceOrder[]>>) => {
   const navigate = useNavigate();
+  const location = useLocation(); 
   const [loading, setLoading] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -39,13 +40,16 @@ export const useDeleteConfirmationModal = (setOrders?: React.Dispatch<React.SetS
     if (showSuccessMessage) {
       const timer = setTimeout(() => {
         setShowSuccessMessage(false);
-        setLoading(false)
-        navigate("/");
+        setLoading(false);
+
+        if (location.pathname !== "/" && location.pathname !== "/orders") {
+          navigate("/");
+        }
       }, 2500);
 
       return () => clearTimeout(timer);
     }
-  }, [showSuccessMessage, navigate]);
+  }, [showSuccessMessage, navigate, location.pathname]); 
 
   return {
     showModal,
