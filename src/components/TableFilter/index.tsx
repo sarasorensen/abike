@@ -47,9 +47,9 @@ const TableFilter: React.FC<FiltersProps> = ({
             {sortConfig.column === column && (
               <span>
                 {sortConfig.direction === "asc" ? (
-                  <FaArrowUp />
-                ) : (
                   <FaArrowDown />
+                ) : (
+                  <FaArrowUp />
                 )}
               </span>
             )}

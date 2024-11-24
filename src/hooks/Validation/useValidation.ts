@@ -58,18 +58,19 @@ const useValidation = (
               validateEmptyInput(fieldValue);
             break;
           case "phoneNumber":
-            errors.phoneNumber = formData.phoneNumber
-              ? validatePhoneNumber(formData.phoneNumber)
-                ? null
-                : "invalid"
-              : "empty";
+            if (!formData.phoneNumber) {
+              errors.phoneNumber = "empty";
+            } else if (!validatePhoneNumber(formData.phoneNumber)) {
+              errors.phoneNumber = "invalid";
+            }
             break;
+
           case "email":
-            errors.email = formData.email
-              ? validateEmail(formData.email)
-                ? null
-                : "invalid"
-              : "empty";
+            if (!formData.email) {
+              errors.email = "empty";
+            } else if (!validateEmail(formData.email)) {
+              errors.email = "invalid";
+            } 
             break;
           default:
             break;
