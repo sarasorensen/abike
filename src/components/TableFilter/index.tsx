@@ -19,13 +19,13 @@ type FiltersProps = {
   handleChange: (
     e: string | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     field: string
-  ) => void;  
+  ) => void;
   resetFilters?: () => void;
   handleSort: (column: string) => void;
   fields: string[];
   selectOptions: Record<string, { label: string; value: string }[]>;
   sortConfig: { column: string; direction: "asc" | "desc" };
-  validDueDates: any
+  validDueDates: any;
 };
 
 const TableFilter: React.FC<FiltersProps> = ({
@@ -36,7 +36,7 @@ const TableFilter: React.FC<FiltersProps> = ({
   fields,
   selectOptions,
   sortConfig,
-  validDueDates
+  validDueDates,
 }) => {
   return (
     <thead>
@@ -85,14 +85,34 @@ const TableFilter: React.FC<FiltersProps> = ({
                     name={`search${label}`}
                     classesName="input-field--white"
                     testId={getTestId(field, "inputSearch")}
-                    min={field === "dueDate" && Array.isArray(validDueDates) && validDueDates.length > 0
-                    ? new Date(Math.min(...validDueDates.map((date: string | number | Date) => new Date(date).getTime()))).toISOString().split("T")[0]
-                    : undefined}
-                  
-                  max={field === "dueDate" && Array.isArray(validDueDates) && validDueDates.length > 0
-                    ? new Date(Math.max(...validDueDates.map((date: string | number | Date) => new Date(date).getTime()))).toISOString().split("T")[0]
-                    : undefined}
-                  
+                    min={
+                      field === "dueDate"
+                        ? new Date(
+                            Math.min(
+                              ...validDueDates.map(
+                                (date: string | number | Date) =>
+                                  new Date(date).getTime()
+                              )
+                            )
+                          )
+                            .toISOString()
+                            .split("T")[0]
+                        : undefined
+                    }
+                    max={
+                      field === "dueDate"
+                        ? new Date(
+                            Math.max(
+                              ...validDueDates.map(
+                                (date: string | number | Date) =>
+                                  new Date(date).getTime()
+                              )
+                            )
+                          )
+                            .toISOString()
+                            .split("T")[0]
+                        : undefined
+                    }
                   />
                 )}
               </div>
