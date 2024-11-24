@@ -18,6 +18,8 @@ interface InputFieldProps {
   showError?: boolean;
   classesName?: string;
   loading?: boolean;
+  min?: string;
+  max?: string;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -34,6 +36,8 @@ const InputField: React.FC<InputFieldProps> = ({
   showError = false,
   classesName,
   loading,
+  min,
+  max,
 }) => {
   const handleClear = () => {
     if (onClear) onClear();
@@ -69,6 +73,8 @@ const InputField: React.FC<InputFieldProps> = ({
             placeholder={placeholder}
             onChange={onChange}
             required={required}
+            min={min}
+            max={max}
             id={testId}
             data-testid={testId}
             aria-required={required}

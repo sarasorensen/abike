@@ -113,6 +113,7 @@ const Dropdown: React.FC<DropdownProps> = ({ options, type, onSelect }) => {
               key={index}
               className="dropdown-item"
               onClick={() => handleOptionClick(option, option.id)}
+              {...testId(option.label)}
             >
               {option.icon && (
                 <span className="dropdown-item-icon">

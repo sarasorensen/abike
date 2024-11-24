@@ -3,12 +3,12 @@ import userEvent from "@testing-library/user-event";
 import Dropdown from "./index";
 import { BrowserRouter } from "react-router-dom";
 
-describe("Dropdown Component", () => {
-  const options = [
-    { label: "Option 1", icon: "", action: "/option1" },
-    { label: "Option 2", icon: "", action: "/option2" },
-  ];
+const options = [
+  { label: "Option 1", icon: "", action: "/option1" },
+  { label: "Option 2", icon: "", action: "/option2" },
+];
 
+describe("Dropdown Component", () => {
   it("renders dropdown button and toggles dropdown menu on click", async () => {
     render(
       <BrowserRouter
@@ -18,24 +18,22 @@ describe("Dropdown Component", () => {
       </BrowserRouter>
     );
 
-    const button = screen.getByTestId("button_options");
-    await waitFor(() => {
-      expect(button).toBeInTheDocument();
-    });
-
+    const buttonOptions = screen.getByTestId("button_options");
     const dropdownMenu = screen.queryByTestId("button_dropdown_elements");
     await waitFor(() => {
+      expect(buttonOptions).toBeInTheDocument();
       expect(dropdownMenu).not.toBeInTheDocument();
     });
 
-    userEvent.click(button);
+    userEvent.click(buttonOptions);
 
     await waitFor(() => {
-      expect(
-        screen.getByTestId("dropdown_menu")
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("dropdown_menu")).toBeInTheDocument();
       expect(screen.getByText("Option 1")).toBeInTheDocument();
       expect(screen.getByText("Option 2")).toBeInTheDocument();
     });
+
+    userEvent.click(buttonOptions);
+    expect(dropdownMenu).not.toBeInTheDocument();
   });
 });

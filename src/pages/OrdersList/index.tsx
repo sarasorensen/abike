@@ -6,7 +6,7 @@ import React, {
   useMemo,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDeleteConfirmationModal } from "../../hooks/useDeleteConfirmationModal";
+import { useDeleteConfirmationModal } from "../../hooks/DeleteConfirmationModal/useDeleteConfirmationModal";
 import { services } from "../../shared-constants/services";
 import TableFilter from "../../components/TableFilter";
 import DeleteConfirmationModal from "../../components/DeleteConfirmationModal";
@@ -59,9 +59,6 @@ const OrdersList: React.FC = () => {
       navigate(`/orders/details/${id}`);
     }
   };
-  const handleSearchChange = useCallback((field: string, value: string) => {
-    setFilters((prev) => ({ ...prev, [field]: value }));
-  }, []);
 
   const handleSort = useCallback((column: string) => {
     setSortConfig((prev) => ({
@@ -71,15 +68,17 @@ const OrdersList: React.FC = () => {
     }));
   }, []);
 
-  const handleFilterChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    field: string
-  ) => {
-    setFilters((prev) => ({
-      ...prev,
-      [field]: e.target.value,
-    }));
-  };
+  const handleChange = useCallback(
+    (
+      e: string | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+      field: string
+    ) => {
+      const value = typeof e === "string" ? e : e.target.value;
+
+      setFilters((prev) => ({ ...prev, [field]: value }));
+    },
+    []
+  );
 
   const filterOrders = useMemo(() => {
     return orders.filter((order) => {
@@ -99,11 +98,15 @@ const OrdersList: React.FC = () => {
   useEffect(() => {
     setFilteredOrders(filterOrders);
     // eslint-disable-next-line
-  }, [orders, filters]);
+  }, [filterOrders]);
 
   const resetFilters = useCallback(() => {
     setFilters(defaultMaintenancefilter);
     setFilteredOrders(orders);
+    setSortConfig({
+      column: "customerName",
+      direction: "asc" as SortDirection,
+    });
   }, [orders]);
 
   const sortedOrders = useMemo(() => {
@@ -125,6 +128,8 @@ const OrdersList: React.FC = () => {
     []
   );
 
+  const validDueDates = orders.map((order) => order.dueDate);
+
   return (
     <div className="page-wrap">
       <div className="header-container">
@@ -141,8 +146,7 @@ const OrdersList: React.FC = () => {
         <table className="table table-hover">
           <TableFilter
             filters={filters}
-            handleFilterChange={handleFilterChange}
-            handleSearchChange={handleSearchChange}
+            handleChange={handleChange}
             resetFilters={resetFilters}
             handleSort={handleSort}
             sortConfig={sortConfig}
@@ -157,6 +161,7 @@ const OrdersList: React.FC = () => {
             selectOptions={{
               serviceType: serviceTypeOptions,
             }}
+            validDueDates={validDueDates}
           />
           <tbody>
             {sortedOrders.map((order) => (

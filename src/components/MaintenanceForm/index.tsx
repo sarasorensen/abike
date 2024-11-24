@@ -5,7 +5,7 @@ import { FaBicycle } from "react-icons/fa";
 import { MdOutlineNoteAlt } from "react-icons/md";
 import { RxAvatar } from "react-icons/rx";
 
-import useValidation from "../../hooks/useValidation";
+import useValidation from "../../hooks/Validation/useValidation";
 import InputField from "../InputField";
 import Button from "../Button";
 import InputSelect from "../InputSelect";
@@ -186,6 +186,7 @@ const MaintenanceForm = ({
                 type="date"
                 value={formData.dueDate}
                 onChange={handleChange}
+                min={new Date().toISOString().split("T")[0]}
                 testId={ids.inputDueDate}
                 errorMessage={getErrorMessage("dueDate")}
                 showError={showError("dueDate")}

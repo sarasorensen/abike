@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { deleteOrder, getOrdersFromStorage } from "../utilities/ordersStorage";
-import { MaintenanceOrder } from "../types/maintenanceOrder";
+import { deleteOrder, getOrdersFromStorage } from "../../utilities/ordersStorage";
+import { MaintenanceOrder } from "../../types/maintenanceOrder";
 
 export const useDeleteConfirmationModal = (setOrders?: React.Dispatch<React.SetStateAction<MaintenanceOrder[]>>) => {
   const navigate = useNavigate();

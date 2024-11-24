@@ -9,16 +9,17 @@ jest.mock("../../utilities/ordersStorage", () => ({
 const mockOnConfirm = jest.fn();
 const mockOnCancel = jest.fn();
 
+const mockOrders = [
+  { id: "1", customerName: "John Doe" },
+  { id: "2", customerName: "Jane Smith" },
+];
+
 describe("DeleteConfirmationModal", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it("renders correctly with order details", async () => {
-    const mockOrders = [
-      { id: "1", customerName: "John Doe" },
-      { id: "2", customerName: "Jane Smith" },
-    ];
     getOrdersFromStorage.mockReturnValue(mockOrders);
 
     render(
@@ -46,10 +47,6 @@ describe("DeleteConfirmationModal", () => {
   });
 
   it("calls onConfirm when confirm button is clicked", async () => {
-    const mockOrders = [
-      { id: "1", customerName: "John Doe" },
-      { id: "2", customerName: "Jane Smith" },
-    ];
     getOrdersFromStorage.mockReturnValue(mockOrders);
 
     render(
@@ -69,10 +66,6 @@ describe("DeleteConfirmationModal", () => {
   });
 
   it("calls onCancel when cancel button is clicked", async () => {
-    const mockOrders = [
-      { id: "1", customerName: "John Doe" },
-      { id: "2", customerName: "Jane Smith" },
-    ];
     getOrdersFromStorage.mockReturnValue(mockOrders);
 
     render(

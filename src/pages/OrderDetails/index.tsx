@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { FaBicycle } from "react-icons/fa";
 import { MdOutlineNoteAlt } from "react-icons/md";
 import { RxAvatar } from "react-icons/rx";
-import { useDeleteConfirmationModal } from "../../hooks/useDeleteConfirmationModal";
+import { useDeleteConfirmationModal } from "../../hooks/DeleteConfirmationModal/useDeleteConfirmationModal";
 import Button from "../../components/Button";
 import DeleteConfirmationModal from "../../components/DeleteConfirmationModal";
 import ActionSuccessMsg from "../../components/ActionSuccessMsg";

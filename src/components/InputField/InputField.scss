@@ -58,6 +58,7 @@
         padding-left: 0;
       }
       &:not(:placeholder-shown) {
+        color: inherit;
         padding-left: vars.$spacing-xlarge;
       }
     }
@@ -80,7 +81,7 @@
     visibility: hidden;
   }
   .error-message[role="alert"] {
-    visibility: visible; 
+    visibility: visible;
   }
 }
 

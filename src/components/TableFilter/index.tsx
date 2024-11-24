@@ -16,27 +16,27 @@ const getTestId = (field: string, type: string) =>
 
 type FiltersProps = {
   filters: Record<string, string>;
-  handleFilterChange: (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  handleChange: (
+    e: string | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     field: string
-  ) => void;
-  handleSearchChange: (field: string, value: string) => void;
+  ) => void;  
   resetFilters?: () => void;
   handleSort: (column: string) => void;
   fields: string[];
   selectOptions: Record<string, { label: string; value: string }[]>;
   sortConfig: { column: string; direction: "asc" | "desc" };
+  validDueDates: any
 };
 
 const TableFilter: React.FC<FiltersProps> = ({
   filters,
-  handleFilterChange,
-  handleSearchChange,
+  handleChange,
   resetFilters,
   handleSort,
   fields,
   selectOptions,
   sortConfig,
+  validDueDates
 }) => {
   return (
     <thead>
@@ -69,7 +69,7 @@ const TableFilter: React.FC<FiltersProps> = ({
                   <InputSelect
                     options={selectOptions[field]}
                     value={filters[field]}
-                    onSelect={(value) => handleSearchChange(field, value)}
+                    onSelect={(value) => handleChange(value, field)}
                     placeholder={`Select ${label}`}
                     classesName="select-input--white"
                     displayLabel={false}
@@ -79,12 +79,20 @@ const TableFilter: React.FC<FiltersProps> = ({
                   <InputField
                     type={field === "dueDate" ? "date" : "text"}
                     value={filters[field]}
-                    onChange={(e) => handleFilterChange(e, field)}
-                    onClear={() => handleSearchChange(field, "")}
+                    onChange={(e) => handleChange(e, field)}
+                    onClear={() => handleChange("", field)}
                     placeholder={`Filter by ${label}`}
                     name={`search${label}`}
                     classesName="input-field--white"
                     testId={getTestId(field, "inputSearch")}
+                    min={field === "dueDate" && Array.isArray(validDueDates) && validDueDates.length > 0
+                    ? new Date(Math.min(...validDueDates.map((date: string | number | Date) => new Date(date).getTime()))).toISOString().split("T")[0]
+                    : undefined}
+                  
+                  max={field === "dueDate" && Array.isArray(validDueDates) && validDueDates.length > 0
+                    ? new Date(Math.max(...validDueDates.map((date: string | number | Date) => new Date(date).getTime()))).toISOString().split("T")[0]
+                    : undefined}
+                  
                   />
                 )}
               </div>

@@ -1,9 +1,9 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import OrdersList from "./index";
-import { useDeleteConfirmationModal } from "../../hooks/useDeleteConfirmationModal";
+import { useDeleteConfirmationModal } from "../../hooks/DeleteConfirmationModal/useDeleteConfirmationModal";
 
-jest.mock("../../hooks/useDeleteConfirmationModal", () => ({
+jest.mock("../../hooks/DeleteConfirmationModal//useDeleteConfirmationModal", () => ({
   useDeleteConfirmationModal: jest.fn(),
 }));
 
