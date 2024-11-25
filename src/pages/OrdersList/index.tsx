@@ -116,7 +116,7 @@ const OrdersList: React.FC = () => {
       sortConfig.direction
     );
   }, [filteredOrders, sortConfig]);
-
+console.log('sortedOrders', sortedOrders)
   const serviceTypeOptions = useMemo(
     () => [
       { label: "All", value: "" },

@@ -14,7 +14,7 @@ export function sortByColumn(
         ?.toString()
         .toLowerCase() ?? "";
 
-    if (sortDirection === "desc") {
+    if (sortDirection === "asc") {
       return valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
     } else {
       return valueA < valueB ? 1 : valueA > valueB ? -1 : 0;
